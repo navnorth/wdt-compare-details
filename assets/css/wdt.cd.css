@@ -1,0 +1,476 @@
+
+.wpdt-c .wpDataTablesWrapper .DTTT_button.DTTT_button_cd:before{
+    font-family: "dashicons" !important;
+    font-size: 18px;
+    content: "\f325";
+}
+#wdt-cd-modal .modal-body p {
+    margin-bottom: 0;
+}
+#wdt-cd-modal .modal-body .col-sm-3{
+    padding-left: 0;
+    font-size: 13px;
+}
+
+#wdt-cd-modal .modal-body .detailColumn{
+    font-size: 13px;
+}
+
+#wdt-cd-modal .modal-body .detailColumn a{
+    box-shadow: none;
+    -o-box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+#wdt-cd-modal .modal-footer{
+    display: none;
+}
+
+#wdt-cd-modal h4.modal-title{
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    line-height: 1.42857143;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+
+#wdt-cd-modal .modal-header button.close:hover span
+  color: #127eec !important;
+  border: 1px solid #127eec !important;
+}
+
+.wpdt-c .wpDataTablesWrapper .compare_detail_column_btn{
+    cursor: pointer;
+}
+.wpdt-c .wpDataTablesWrapper .compare_detail_column_btn:focus{
+   background-color: rgb(221, 221, 221) !important;
+}
+.wpdt-c .wpDataTablesWrapper input.cd-link{
+    cursor: pointer;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #2196F3;
+}
+.wpdt-c .wpDataTablesWrapper input.cd-link:hover{
+    color: #0a6ebd;
+    text-decoration: none;
+}
+
+.wpDataTablesWrapper table.wpDataTable > tbody > tr > td.column-comparedetail{
+    text-align: center;
+}
+
+.wpDataTablesWrapper .DTTT_button.DTTT_button_cd{
+    order: 8;
+    margin-left: 12px;
+    margin-right: 0 !important;
+}
+
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='comparedetail'] .wdt-toggle-show-sorting,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='comparedetail'] .wdt-toggle-show-filters{
+    display: none;
+}
+a.compare_details img {
+    width: 100%;
+}
+a.compare_details {
+    display: block;
+    width: 32px;
+}
+th.wdtheader.sort.expand.column-compare {
+    width: 96px !important;
+}
+
+
+
+
+/* ***************** */
+/* WDT COMPARE ADDON */
+/* ***************** */
+div#wdt-cd-modal div.modal-header {
+    border-bottom: 1px solid #ececec;
+}
+.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody tr td input[type="checkbox"]{
+  cursor:pointer !important;
+}
+.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody[logic="button"] tr td{
+    cursor:default !important;
+}
+.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody[logic="row"] tr td{
+    cursor:pointer !important;
+}
+#wdt-cd-modal {padding:0px 15px !important;}
+.dataTables_compare_button_wrapper {
+    line-height: 16px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    margin-right: 15px;
+    float: right;
+}
+.dataTables_compare_button_wrapper.spaced{margin-right:30px !important;}
+.wdt-compare-modal-body-content { width: 100%; }
+.wdt-compare-modal-body-content table {width: 100%; table-layout: fixed;}
+.dataTables_compare_button_wrapper a.compare_button,
+.dataTables_compare_button_wrapper a.clear_compare_button {
+    padding: 8px 10px;
+    float: left;
+    cursor: pointer;
+    background-color: #efefef;
+    border:1px solid #efefef;
+    color: #333333;
+    margin-right:15px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.wpdt-c .modal-dialog.compare {
+    width:100% !important;
+    max-width: 960px !important;
+    margin: 30px auto !important;
+}
+
+@media (max-width: 1023px) {
+  .wpdt-c .modal-dialog.compare { max-width: 768px !important;}
+}
+@media (max-width: 840px) {
+  .wpdt-c .modal-dialog.compare { max-width: 600px !important;}
+}
+@media (max-width: 768px) {
+  /*.dataTables_compare_button_wrapper { width: 100% !important;}*/
+  .wpDataTablesWrapper .dt-buttons {
+    float: left !important;
+    margin-left: 0px !important;
+  }
+  .dataTables_compare_button_wrapper {float:left !important;}
+}
+
+
+#wdt-cd-modal .modal-body .col-sm-3 {
+  padding-left:15px !important;
+  padding-right:15px !important;
+}
+.wdt-compare-block-wrapper {
+    display: inline-block;
+    width: 25%;
+    /* margin: 0px 1% !important; */
+    /* overflow: hidden; */
+    position: relative;
+}
+.wdt-compare-block-wrapper.bordered {
+    background-color: #e4f9ff;
+}
+.wdt-compare-block table {
+  width:100.20% !important;
+  table-layout: fixed;
+}
+.wdt-compare-block {
+    width: 100% !important;
+    padding: 0px !important;
+    position: relative;
+    margin-top: 20px;
+    overflow-x: hidden;
+}
+
+.wdt-remove-column {
+  float: left;
+  text-align: center;
+  height: 24px;
+  width: 24px;
+  display: block;
+  cursor: pointer;
+  top: -10px;
+  right: 6px;
+  border-bottom: 0px;
+  color: #192749;
+  border: 1px solid transparent;
+  margin-bottom: 5px;
+  float:right;
+}
+.wdt-remove-column:focus {
+    border: 1px solid #92c8ff;
+}
+.wdt-remove-column .dashicons {
+    font-size: 16px;
+    line-height: 22px;
+    color: #224596;
+}
+.wdtcomparerow {
+    font-size: 14px;
+    position: relative !important;
+    box-sizing: border-box;
+    padding: 0px !important;
+}
+.wdtcomparerow>span {
+    padding: 5px;
+    line-height: 18px;
+    float: left;
+    width: 100%;
+    border: 1px solid transparent;  
+}
+.wdtcomparerow:focus>span{
+    border: 1px solid #7fbeff;
+    border-left:1px solid #7fbeff !important;
+}
+.wdtcomparerow.even {
+    background-color: #d4d4d4 !important;
+}
+.wdt-compare-block table tr {background-color: transparent !important;}
+.wdt-compare-block table tr td {padding: 8px 15px !important;/* min-height: 26px;*/}
+.wdt-compare-block table tr:last-of-type td {border-bottom: 0px !important;}
+
+
+.dataTables_compare_message {
+    float: left;
+    width: 100%;
+    min-width: 100%;
+    font-size: 14px;
+    color: #294179;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+.dataTables_compare_message .dashicons {
+    font-size: 17px;
+    line-height: 20px;
+    display: block;
+    float: left;
+    margin-right: 2px;
+}
+
+#wdt-cd-modal .modal-dialog.compare .modal-content {
+    min-height: 220px;
+}
+
+/* PRELOADER */
+.wdt-compare-preloader-wrapper {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    min-height: 100%;
+    z-index: 999;
+    background-color: rgba(255,255,255,0.8);
+}
+.wdt-compare-preloader-wrapper table {
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    z-index: 9999;
+}
+.wdt-compare-preloader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  margin: 0px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Tooltip container */
+.wdt-compare-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.wdt-compare-tooltip .wdt-compare-tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  position: absolute;
+  z-index: 1;
+}
+
+.wdt-remove-column:hover .wdt-compare-tooltiptext {
+  visibility: visible;
+}
+
+table.wpDataTable tbody tr td input[type="checkbox"]{
+  margin-right:10px; margin-top: -2px;
+}
+
+
+
+
+
+
+/* Separate Checkbox Column Css */
+
+.wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table { width: 100%;}
+
+.wpDataTablesWrapper table.wpDataTable thead tr th:first-child table { width: 100%;}
+.wpDataTablesWrapper table.wpDataTable thead tr th:first-child {width: 30%;}
+
+.wpDataTablesWrapper table.wpDataTable thead th:first-child table tr {background-color: transparent !important;}
+.wpDataTablesWrapper table.wpDataTable thead th:first-child:after{content: none !important;}
+.wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th {
+  vertical-align: top;
+  padding: 3px 10px !important;
+  color: #ffffff !important;
+}
+
+
+/* for admin only */
+.wdtCompareColumn {
+  display: inline-block;
+  width: 25%;
+  margin-right: 10px;
+  float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 1200px) {
+  .wdtCompareColumn {width: 35%;}
+}
+@media (max-width: 768px) {
+  .wdtCompareColumn {width: 45%;}
+  .wdtCompareColumn {margin-bottom:20px;}
+}
+
+/* HEADER */
+.wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(1) {
+  width: 25%;
+  text-overflow: ellipsis;
+  display: inline-block; 
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 5px !important;
+}
+/* BODY */
+.wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(2) {
+  width: 75%;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 5px !important;
+}
+
+.wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(1) {width: 25%; }
+.wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(2) {width: 75%; }
+
+@media (max-width: 1200px) {
+  /* HEADER */
+  .wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(1) { width: 35% !important; }
+  .wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(2) { width: 65% !important; }
+  /* BODY */
+  .wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(1) {width: 35%; }
+  .wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(2) {width: 65%; }
+}
+
+@media (max-width: 768px) {
+  /* HEADER */
+  .wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(1) { width: 45% !important; }
+  .wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th:nth-of-type(2) { width: 55% !important; }
+  /* BODY */
+  .wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(1) {width: 45%; }
+  .wpDataTablesWrapper table.wpDataTable tbody tr td:first-child table tr td:nth-of-type(2) {width: 55%; }
+}
+
+.wpDataTablesWrapper table.wpDataTable >tbody >tr >td.pfxgone:before,
+.wpDataTablesWrapper table.wpDataTable >tbody >tr >td.pfxgone:after {display: none;}
+
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting table tr th.scnd:after, 
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc table tr th.scnd:after, 
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after{
+  border: 5px solid transparent;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+  content: "";
+  height: 0;
+  width: 0;
+  vertical-align: 3px;
+  margin: 0 0 0 10px;
+  opacity: .6;
+}
+
+.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting      table tr th.scnd:after, 
+.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc  table tr th.scnd:after {
+    border-bottom-color: #ffffff !important;
+}
+
+.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after {
+    border-top-color: #ffffff !important;
+}
+
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting      table tr th.scnd:hover:after, 
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc  table tr th.scnd:after, 
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after {
+    opacity: 1;
+}
+
+.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th.sorting:after, 
+.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th.sorting_asc:after {
+    border-bottom-color: #ffffff !important;
+}
+
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting     table tr th.scnd:after, 
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc table tr th.scnd:after {
+    border-top-width: 0;
+}
+
+.wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after {
+    border-bottom-width: 0px;
+}
+
+
+/*Accessibility*/
+table.wpDataTable thead tr th:first-child{
+  background-color: #ffffff !important;
+}
+table.wpDataTable thead tr th:first-child table tr th.frst:focus {
+    background-color: rgba(255,255,255,.3) !important;
+}
+table.wpDataTable thead tr th:first-child table tr th.scnd:focus {
+    background-color: rgba(255,255,255,.3) !important;
+}
+
+.dataTables_compare_button_wrapper .compare_button:focus,
+.dataTables_compare_button_wrapper .clear_compare_button:focus{
+  border:1px solid #53b1fb;
+}
+
+.dataTables_compare_button_wrapper .compare_button.selected:focus,
+.dataTables_compare_button_wrapper .clear_compare_button.selected:focus{
+  border:1px solid #127eec !important;
+  background-color: #008cff !important;
+}
+
+table.wpDataTable tbody tr td:first-child input:focus{
+  outline: #53b1fb solid 2px !important;
+  border:1px solid #53b1fb !important;
+}
+
+.dataTables_compare_button_wrapper {
+    position: absolute;
+    right: 270px;
+}
+
+@media (max-width: 979px){
+  .dataTables_compare_button_wrapper { right: 160px; }
+}
+
+@media (max-width: 768px){
+  .dataTables_compare_button_wrapper { position:relative; float:left; right:0px; margin-bottom:10px;}
+}
