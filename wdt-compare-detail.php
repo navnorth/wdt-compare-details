@@ -233,17 +233,12 @@ class Plugin
       
       $tableData = WDTConfigController::loadTableFromDB($wpid);
       $advancedSettingsTable = json_decode($tableData->advanced_settings);
-      //print_r('WOW');
-      //print_r($advancedSettingsTable->compareDetail." - ".isset($advancedSettingsTable->compareDetail));
+
+      foreach($namedDataArray as $i => $item) {
+          $namedDataArray[$i] = array('Compare'=>'<input type="checkbox" aria-label="Compare Column Header" tabindex="0"/>') + $namedDataArray[$i];   
+      }
       
-      //if (isset($advancedSettingsTable->compareDetail) && $advancedSettingsTable->compareDetail > 0) {
-        foreach($namedDataArray as $i => $item) {
-            $namedDataArray[$i] = array('Compare'=>'<input type="checkbox" aria-label="Compare Column Header" tabindex="0"/>') + $namedDataArray[$i];    
-        }
-      //}
-      
-      return $namedDataArray;
-      
+      return $namedDataArray;    
     }
     
     /**
@@ -795,6 +790,7 @@ class Plugin
                 WDT_CD_VERSION,
                 true
             );
+            wp_localize_script( 'wdt-cd-backend', 'wdt_ajax_compare_backend', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());

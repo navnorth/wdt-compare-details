@@ -474,3 +474,22 @@ table.wpDataTable tbody tr td:first-child input:focus{
 @media (max-width: 768px){
   .dataTables_compare_button_wrapper { position:relative; float:left; right:0px; margin-bottom:10px;}
 }
+
+
+
+/* WDT-MOBILE RESPONSIVE */
+@media screen and (max-width: 768px) {
+	.wpdt-c .wpDataTablesWrapper table.wpDataTable thead{display:none !important;}
+
+	.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody tr td, 
+	.wpdt-c .wpDataTablesWrapper table.wpDataTable thead tr th {
+	    border: none !important;
+	    padding-left: 50% !important;
+	    position: relative !important;
+	    display: block !important;
+	    width: 100% !important;
+	    text-overflow: unset !important;
+	    overflow: unset !important;
+	    text-align: left !important;
+	}
+}

@@ -359,7 +359,15 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
             jQuery("#wdt-cd-modal").on('show.bs.modal', function(){
               jQuery('#wdt-cd-modal').attr('aria-hidden','false');
             });
-
+              
+            jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
+              jQuery('div[data-orig_header="Compare"]').show();
+            });
+            
+        }else{ // compare disabled
+          jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
+            jQuery('div[data-orig_header="Compare"]').hide();
+          });
         }
       
     })(jQuery);

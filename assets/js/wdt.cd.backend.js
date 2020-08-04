@@ -32,6 +32,15 @@
                     jQuery('#wdt-cd-click-event-logic').selectpicker('refresh').trigger('change');
                     jQuery('#wdt-cd-render-data-in').selectpicker('refresh').trigger('change');
 
+                    var cnt = 0;
+                    for (let column of wpdatatable_config.columns) {
+                        if (column.orig_header === 'Compare') {
+                            wpdatatable_config.columns[cnt].visible = 1
+                            //console.log(wpdatatable_config.columns[cnt].visible);
+                        }
+                        cnt++;
+                    }
+                    
                 } else {
                     jQuery('.wdt-cd-click-event-logic-block').hide();
                     jQuery('.wdt-cd-render-data-in-block').hide();
@@ -43,6 +52,14 @@
                     wpdatatable_config.setCompareDetailLogic('row');
                     wpdatatable_config.setCompareDetailRender('popup');
 
+                    var cnt = 0;
+                    for (let column of wpdatatable_config.columns) {
+                        if (column.orig_header === 'Compare') {
+                            wpdatatable_config.columns[cnt].visible = 0
+                            //console.log(wpdatatable_config.columns[cnt].visible);  
+                        }
+                        cnt++;
+                    }
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'comparedetail') {
                             state = true;
@@ -54,6 +71,7 @@
                         for (var i = compareColumn.pos + 1; i <= wpdatatable_config.columns.length - 1; i++) {
                             wpdatatable_config.columns[i].pos = --wpdatatable_config.columns[i].pos;
                         }
+                        
                         //remove comparedetaisl object from columns_by_headers
                         wpdatatable_config.columns_by_headers = _.omit(
                             wpdatatable_config.columns_by_headers, compareColumn.orig_header);
@@ -64,6 +82,8 @@
                             function (el) {
                                 return el.orig_header == compareColumn.orig_header;
                             });
+
+                       
                     }
 
                 }
@@ -280,8 +300,7 @@ function callbackExtendOptionInObjectFormatCompare(allColumnSettings, obj) {
  */
 function callbackExtendSmallBlockCompare($columnBlock, column) {
     $columnBlock.find('i.wdt-toggle-show-compare').click(function (e) {
-        e.preventDefault();
-        console.log(column.compareDetailColumnOption);
+        e.preventDefault(); 
         if (!column.compareDetailColumnOption) {
             column.compareDetailColumnOption = 1;
             jQuery(this)
