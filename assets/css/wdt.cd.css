@@ -476,20 +476,16 @@ table.wpDataTable tbody tr td:first-child input:focus{
 }
 
 
-
-/* WDT-MOBILE RESPONSIVE */
+/*Responsive*/
 @media screen and (max-width: 768px) {
-	.wpdt-c .wpDataTablesWrapper table.wpDataTable thead{display:none !important;}
-
-	.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody tr td, 
-	.wpdt-c .wpDataTablesWrapper table.wpDataTable thead tr th {
-	    border: none !important;
-	    padding-left: 50% !important;
-	    position: relative !important;
-	    display: block !important;
-	    width: 100% !important;
-	    text-overflow: unset !important;
-	    overflow: unset !important;
-	    text-align: left !important;
-	}
+  .wdt-compare-modal-body-content table {
+    min-width: 600px !important;
+  }
+  .wdt-compare-modal-body-content {
+    overflow-x: scroll;
+    overflow-y: visible;
+  }
+  #wdt-compare-table {
+    width:768px !important;
+  }  
 }
