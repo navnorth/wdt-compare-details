@@ -446,6 +446,13 @@ table.wpDataTable thead tr th:first-child table tr th.scnd:focus {
     background-color: rgba(255,255,255,.3) !important;
 }
 
+
+.dataTables_compare_button_wrapper a.compare_button.selected:hover,
+.dataTables_compare_button_wrapper a.clear_compare_button.selected:hover{
+  border:1px solid #127eec !important;
+  background-color: #008cff !important;
+}
+
 .dataTables_compare_button_wrapper .compare_button:focus,
 .dataTables_compare_button_wrapper .clear_compare_button:focus{
   border:1px solid #53b1fb;
