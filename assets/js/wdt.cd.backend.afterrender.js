@@ -167,7 +167,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               */
               
               var html = '<div class="dataTables_compare_button_wrapper">';
-                  html += '<a class="compare_button test" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
+                  html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
                   html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
                   html += '</div>';      
               jQuery( html).insertBefore( '.wpDataTablesWrapper .dataTables_filter label');
