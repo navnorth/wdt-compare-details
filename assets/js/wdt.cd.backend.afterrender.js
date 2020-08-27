@@ -714,6 +714,7 @@ function retrieveCompareData(obj,tableDescription){
         async: true,
 				data: {'action':'extendTableObjectCompareAjax','table_id': tableid},
 				success:function(response){
+          
 					globalresponse = JSON.parse(response);
           var alldata = [];
           
@@ -738,7 +739,8 @@ function retrieveCompareData(obj,tableDescription){
           colArrayLength = globalresponse['column'].length;   
           for (var x = 0; x < colArrayLength; x++) {    
                     
-              var vis = globalresponse['column'][x]['compareDetailColumnOption']
+              var vis = globalresponse['column'][x]['compareDetailColumnOption'];
+              
               
               if(vis > 0){
                 chtml += '<tr>';
@@ -760,12 +762,29 @@ function retrieveCompareData(obj,tableDescription){
                     
                     for (var q = 0; q < colArrayLength; q++) { 
                       var vis = globalresponse['column'][q]['compareDetailColumnOption'];
+                      var dtp = globalresponse['column'][q]['type'];
+                      var tgt = globalresponse['column'][q]['linkTargetAttribute']
+                      var btn = globalresponse['column'][q]['linkButtonAttribute']
                       var pfx = globalresponse['column'][q]['text_before'];            
                       var sfx = globalresponse['column'][q]['text_after'];
+                      var dec = globalresponse['column'][q]['decimalPlaces'];
+                      var lnklabel = globalresponse['column'][q]['linkButtonLabel'];
+
                       if(vis > 0){
                         var col = globalresponse['column'][q]['orig_header'];
                         var dsp = globalresponse['column'][q]['display_header'];
                         if(left_header == col){
+                          
+                          
+                          if(dtp == 'float'){
+                            if(dec){
+                              dta = thousands_separators(parseFloat(dta).toFixed(2));
+                            }else{
+                              dta = thousands_separators(parseFloat(dta));
+                            }
+                          }
+                          
+                          
                           var dta = (globalresponse['data'][fcmp][col] === null)? '': pfx+globalresponse['data'][fcmp][col]+sfx;
                           
                           if(colrw == 1){
@@ -778,7 +797,16 @@ function retrieveCompareData(obj,tableDescription){
                           }else{
                             chtml += '<td class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+'" >';
                             chtml += '<span>';
-                            chtml += dta;
+                            if(dtp == 'link'){
+                                if(btn){
+                                  chtml += '<a href="'+dta+'" target="'+tgt+'"><button class="">'+lnklabel+'</button></a>';
+                                }else{
+                                  chtml += '<a href="'+dta+'" target="'+tgt+'">'+lnklabel+'</a>';
+                                }
+                                
+                            }else{
+                                chtml += dta;                  
+                            }
                             chtml += '</span>';
                             chtml += '</td>';  
                           }
@@ -981,6 +1009,14 @@ jQuery(window).resize(function(){
 });
 
 
-
-
+function thousands_separators(num){
+  var num_parts = num.toString().split(".");
+  num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return num_parts.join(".");
+}
+function addZeroes(num) {
+  const dec = num.split('.')[1]
+  const len = dec && dec.length > 2 ? dec.length : 2
+  return Number(num).toFixed(len)
+}
 
