@@ -775,10 +775,10 @@ function retrieveCompareData(obj,tableDescription){
                         var dsp = globalresponse['column'][q]['display_header'];
                         if(left_header == col){
                           
-                          var dta = '';
-                          if(globalresponse['data'][fcmp][col] !== null){
+                          var dta = globalresponse['data'][fcmp][col];
+                          if(dta !== null){
                             if(dtp == 'float'){
-                              dta = globalresponse['data'][fcmp][col];
+                              
                               if(dec){
                                 dta = thousands_separators(addZeroes(parseFloat(dta).toFixed(2)));
                               }else{
@@ -786,6 +786,8 @@ function retrieveCompareData(obj,tableDescription){
                               }
                             }
                             dta = pfx+dta+sfx;
+                          }else{
+                            dta = '';
                           }
                           
                           if(colrw == 1){
