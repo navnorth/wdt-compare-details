@@ -775,17 +775,18 @@ function retrieveCompareData(obj,tableDescription){
                         var dsp = globalresponse['column'][q]['display_header'];
                         if(left_header == col){
                           
-                          
-                          if(dtp == 'float'){
-                            if(dec){
-                              dta = thousands_separators(parseFloat(dta).toFixed(2));
-                            }else{
-                              dta = thousands_separators(parseFloat(dta));
+                          var dta = '';
+                          if(globalresponse['data'][fcmp][col] !== null){
+                            if(dtp == 'float'){
+                              dta = globalresponse['data'][fcmp][col];
+                              if(dec){
+                                dta = thousands_separators(addZeroes(parseFloat(dta).toFixed(2)));
+                              }else{
+                                dta = thousands_separators(parseFloat(dta));
+                              }
                             }
+                            dta = pfx+dta+sfx;
                           }
-                          
-                          
-                          var dta = (globalresponse['data'][fcmp][col] === null)? '': pfx+globalresponse['data'][fcmp][col]+sfx;
                           
                           if(colrw == 1){
                             chtml += '<th class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+'"  scope="col">';
