@@ -4,7 +4,7 @@ Contributors: Navigation North
 Tags: data tables, compare
 Requires at least: 4.9
 Tested up to: 5.2.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,9 @@ No Frequently Asked Questions
 No screenshots available.
 
 ### Changelog ###
+
+= 1.0.1 =
+* fix commenting bug for page titles with `-->`
 
 = 1.0.0 =
 * Initial development

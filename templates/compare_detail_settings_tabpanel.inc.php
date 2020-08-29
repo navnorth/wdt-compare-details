@@ -16,10 +16,10 @@
                 <label for="wdt-cd-toggle-compare-detail" class="ts-helper"></label>
             </div>
         </div>
-        <!-- /Compare-Detail checkbox-->
+        <!-- /Compare-Detail checkbox -->
 
-        <!-- Compare-Detail Click Event Logic-->
-        <!--
+        <?php /* Compare-Detail Click Event Logic -- not in use ?>
+
         <div class="col-sm-4 wdt-cd-click-event-logic-block hidden">
 
             <h4 class="c-black m-b-20">
@@ -40,11 +40,10 @@
             </div>
 
         </div>
-        -->
-        <!-- /Compare-Detail Click Event Logic-->
+        <?php /Compare-Detail Click Event Logic */ ?>
 
-        <!-- Compare-Detail Render data in-->
-        <!--
+        <?php /* Compare-Detail Render data in -- not in use ?>
+
         <div class="col-sm-4 wdt-cd-render-data-in-block hidden">
 
             <h4 class="c-black m-b-20">
@@ -66,15 +65,15 @@
             </div>
 
         </div>
-        -->
-        <!-- /Compare-Detail Render data in-->
+        <?php /Compare-Detail Render data in */ ?>
+
     </div>
     <!-- /.row -->
 
     <!-- .row -->
     <div class="row">
-        <!-- Compare-Detail Render page-->
-        <!--
+
+        <?php /* Compare-Detail Render page -- not in use ?>
         <div class="col-sm-4 wdt-cd-render-page-block hidden">
 
             <h4 class="c-black  m-b-20">
@@ -96,15 +95,15 @@
             </div>
 
         </div>
-        -->
-        <!-- /Compare-Detail Render page -->
+        <?php /Compare-Detail Render page */ ?>
+
     </div>
     <!-- /.row -->
 
     <!-- .row -->
     <div class="row">
-        <!-- Compare-Detail Render post-->
-        <!--
+        <?php /* Compare-Detail Render post -- not in use ?>
+
         <div class="col-sm-4 wdt-cd-render-post-block hidden">
 
             <h4 class="c-black  m-b-20">
@@ -126,11 +125,10 @@
             </div>
 
         </div>
-        --> 
-        <!-- /Compare-Detail Render post -->
+        <?php /Compare-Detail Render post */ ?>
 
         <!-- Compare-Detail Popup Title -->
-        
+
         <div class="col-sm-4 wdt-cd-popup-title-block hidden">
             <h4 class="c-black m-b-20">
                 <?php _e('Popup Title', 'wpdatatables'); ?>
@@ -149,8 +147,8 @@
                 </div>
             </div>
         </div>
-        
-        
+
+
         <!-- /Compare-Detail Popup Title -->
     </div>
     <!-- /.row -->
