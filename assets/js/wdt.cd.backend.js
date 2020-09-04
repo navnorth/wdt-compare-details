@@ -1,7 +1,7 @@
 (function ($) {
     $(function () {
-        
-        
+
+
         /**
          * Extend wpdatatable_config object with new properties and methods
          */
@@ -14,9 +14,9 @@
             compareDetailRenderPost: '',
             compareDetailPopupTitle: '',
             setCompareDetail: function (compareDetail) {
-                
-                
-                
+
+
+
                 let state = false;
                 let compareColumn;
                 wpdatatable_config.compareDetail = compareDetail;
@@ -34,13 +34,13 @@
 
                     var cnt = 0;
                     for (let column of wpdatatable_config.columns) {
-                        if (column.orig_header === 'Compare') {
+                        if (column.orig_header === 'comparedetail') {
                             wpdatatable_config.columns[cnt].visible = 1
                             //console.log(wpdatatable_config.columns[cnt].visible);
                         }
                         cnt++;
                     }
-                    
+
                 } else {
                     jQuery('.wdt-cd-click-event-logic-block').hide();
                     jQuery('.wdt-cd-render-data-in-block').hide();
@@ -52,14 +52,6 @@
                     wpdatatable_config.setCompareDetailLogic('row');
                     wpdatatable_config.setCompareDetailRender('popup');
 
-                    var cnt = 0;
-                    for (let column of wpdatatable_config.columns) {
-                        if (column.orig_header === 'Compare') {
-                            wpdatatable_config.columns[cnt].visible = 0
-                            //console.log(wpdatatable_config.columns[cnt].visible);  
-                        }
-                        cnt++;
-                    }
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'comparedetail') {
                             state = true;
@@ -71,7 +63,7 @@
                         for (var i = compareColumn.pos + 1; i <= wpdatatable_config.columns.length - 1; i++) {
                             wpdatatable_config.columns[i].pos = --wpdatatable_config.columns[i].pos;
                         }
-                        
+
                         //remove comparedetaisl object from columns_by_headers
                         wpdatatable_config.columns_by_headers = _.omit(
                             wpdatatable_config.columns_by_headers, compareColumn.orig_header);
@@ -82,8 +74,6 @@
                             function (el) {
                                 return el.orig_header == compareColumn.orig_header;
                             });
-
-                       
                     }
 
                 }
@@ -126,7 +116,7 @@
                                 {
                                     type: 'comparedetail',
                                     orig_header: 'comparedetail',
-                                    display_header: 'Details',
+                                    display_header: 'Compare',
                                     pos: wpdatatable_config.columns.length,
                                     details: 'comparedetail',
                                     parent_table: wpdatatable_config
@@ -182,14 +172,14 @@
             var advancedSettings = JSON.parse(wpdatatable_init_config.advanced_settings);
 
             if (advancedSettings !== null) {
-                
+
                 var compareDetail = advancedSettings.compareDetail;
                 var compareDetailLogic = advancedSettings.compareDetailLogic;
                 var compareDetailRender = advancedSettings.compareDetailRender;
                 var compareDetailRenderPage = advancedSettings.compareDetailRenderPage;
                 var compareDetailRenderPost = advancedSettings.compareDetailRenderPost;
                 var compareDetailPopupTitle = advancedSettings.compareDetailPopupTitle;
-                
+
                 if (typeof compareDetail !== 'undefined') {
                     wpdatatable_config.setCompareDetail(compareDetail);
                 }
@@ -276,7 +266,7 @@
  * Initialize new property in object
  */
 function callbackExtendColumnObjectCompare(column,obj) {
-  
+
     var newOptionName = 'compareDetailColumnOption';
     if (typeof obj.compareDetailColumnOption == 'undefined'){
         obj.setAdditionalParam(newOptionName, column.compareDetailColumnOption);
@@ -300,7 +290,7 @@ function callbackExtendOptionInObjectFormatCompare(allColumnSettings, obj) {
  */
 function callbackExtendSmallBlockCompare($columnBlock, column) {
     $columnBlock.find('i.wdt-toggle-show-compare').click(function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         if (!column.compareDetailColumnOption) {
             column.compareDetailColumnOption = 1;
             jQuery(this)
@@ -322,7 +312,7 @@ function callbackExtendSmallBlockCompare($columnBlock, column) {
           .addClass('zmdi-layers-off')
           .removeClass('zmdi-layers');
     }
-    
+
 }
 
 /**
