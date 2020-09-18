@@ -3,13 +3,13 @@ namespace WDTCompareDetail;
 
 /**
  * @package Compare-Details for wpDataTables
- * @version 1.0.3
+ * @version 1.0.4
  */
 /*
 Plugin Name: Compare-Details for wpDataTables
 Plugin URI: https://wpdatatables.com/documentation/addons/compare-detail/
 Description: A wpDataTables addon which allows comparing details for selected rows in a popup.
-Version: 1.0.3
+Version: 1.0.4
 Author: Navigation North
 Author URI: https://www.navigationnorth.com
 Text Domain: wpdatatables
