@@ -2,131 +2,21 @@ var forcompare = [];
 var globalresponse = 0;
 var msg_timer;
 
-wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription) {
+wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDescription) {
     (function ($) {
+        if (tableDescription.compareDetail) { // compare enabled
 
-        if (tableDescription.compareDetail) {
-
-            //UNBIND EXISTING MASTERDETAIL EVENT
+           /**
+           * Insert Compare and Clear Buttons
+           */
             var tableid = gettableid(jQuery('.wpDataTable.dataTable'));
             var thebody = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody');
             var theheadtr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead tr');
             var firstheader = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead>tr>th:first-child';
             var firstcolumn = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody>tr>td:first-child';
 
-
-              /*
-              loadcheckboxes(firstheader,thebody,function(){
-                handleprefixsuffix(function(){
-
-                  var column_count = theheadtr.find('th').length + 1;
-                  var first_column_width = (100/column_count) * 2;
-                  jQuery(firstheader).css("width",first_column_width+'%');
-                  jQuery(firstcolumn).css("width",first_column_width);
-
-
-                });
-              });
-              */
-
-              jQuery('.master_detail_column_btn').attr('role','button');
-              //jQuery('<input type="checkbox"/>').prependTo(firstcolumn);
-              thebody.attr('logic',tableDescription.masterDetailLogic);
-
-
-
-              if(typeof(page_is_admin) != "undefined" && page_is_admin !== null) {
-                // Backend
-                /*
-                var buttonexists = setInterval(function() {
-                   if (jQuery(firstheader).find('button').length) {
-                      clearInterval(buttonexists);
-                      //backend
-                      //loadcombinedheader(firstheader);
-                      //loadcombinedheader2(firstheader);
-                      jQuery(firstheader).prepend('<div class="wdtCompareColumn">Compare</div>');
-                   }
-                }, 100); // check every 100ms
-                */
-              }else{
-                // Frontend
-                //loadcombinedheaderfrontend(firstheader);
-
-              }
-
-
-
-            /*
-            jQuery.each(jQuery._data(jQuery('th.wdtheader.sort.expand.column-lea-name.sorting').get(0), 'events'), function() {
-              // iterate registered handler of original
-              jQuery.each(this, function() {
-                if(this.type == 'click'){
-                    console.log(this.type+' - '+this.handler);
-                    //jQuery('.wdtCompareColumn').bind(this.type, this.handler);
-                    jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child').unbind(this.type)
-                }
-                //jQuery('#target').bind(this.type, this.handler);
-              });
-            });
-            */
-
-
-
-            /*
-            jQuery.each(jQuery._data(jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child').get(0), 'events'), function() {
-              // iterate registered handler of original
-              jQuery.each(this, function() {
-                if(this.type == 'click'){
-                  console.log(this.type+' - '+this.handler);
-                  jQuery('.wdtCompareColumn').bind(this.type, this.handler);
-                  //jQuery('.wpDataTablesWrapper table.wpDataTable thead th:nth-of-type').unbind(this.type);
-                }
-              });
-            });
-            */
-
-            /*
-            jQuery(document).on('click','.wpDataTablesWrapper table.wpDataTable thead th:first-child', function(event){
-              event.stopImmediatePropagation();
-                            //console.log(event.target.nodeName);
-            }, false)
-            */
-
-            /*
-            jQuery('th.wdtheader.sort.expand.column-lea-name.sorting').on('click', function (e) {
-                console.log(e.target.nodeName);
-            });
-            */
-
-            /*
-            jQuery('.wdtCompareColumn').on('click',function(e) {
-                 // Do something
-                 console.log('FIRED');
-                 e.preventDefault();
-                 e.stopPropagation();
-                 e.stopImmediatePropagation();
-            });
-            */
-
-
-
-
-
-
-            //console.log(tableDescription);
-
-            if(tableDescription.masterDetailLogic == "row"){
-              thebody.unbind();
-              thebody.on('click', 'tr', function (e) {
-                  if(e.target.nodeName == 'TD'){
-                    //console.log(e.target.nodeName);
-                    //console.log(tableDescription);
-                    showDetailsModal(this, tableDescription);
-                  }
-              });
-
-            }
-
+            jQuery('.master_detail_column_btn').attr('role','button');
+            thebody.attr('logic',tableDescription.masterDetailLogic);
 
             var checkExist = setInterval(function() {
                if (jQuery('table.wpDataTable.dataTable').length) {
@@ -135,37 +25,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
                }
             }, 100); // check every 100ms
 
-            /*
-            var resyncinterval = setInterval(function() {
-               if (jQuery('div.wpdt-c.alert').length) {
-                  synccomparechecks();
-               }
-            }, 100); // check every 100ms
-            */
-
-
-
             var thebodytr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody tr td:nth-of-type(1)');
             function insertCompareButton(){
-
-              //theheadtr.prepend('<th data-class="expand" class="wdtheader compare expand column-lea-name" style="" tabindex="0" aria-controls="'+tableDescription.tableId+'" aria-label="compare: click checkboxes in this column to include in comparison"><a class="compare_details"><img src="'+pluginroot+'assets/img/compare-ico.png" alt="compare button"/></a></th>');
-              //thebodytr.each(function (i, tr) {
-                //var row = jQuery(tr)
-                //row.prepend('<td><input class="wdtCompareCheckbox" type="checkbox" idx="'+i+'" name="compare_'+i+'" value="'+i+'"></td>');
-              //});
-
-              //thebodytr.each(function (i, tr) {
-                //var row = jQuery(tr)
-                //row.prepend('<input class="wdtCompareCheckbox" type="checkbox" idx="'+i+'" name="compare_'+i+'" value="'+i+'">');
-              //});
-
-              /*
-              console.log(jQuery('.wpDataTable.dataTable tr td.column-comparedetail').length);
-              if( jQuery('.wpDataTable.dataTable tr td.column-comparedetail').length > 0 ){
-                jQuery('.wpDataTable.dataTable tr td.column-comparedetail').html('<input type="checkbox"/>');
-              }
-              */
-
               var html = '<div class="dataTables_compare_button_wrapper">';
                   html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
                   html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
@@ -177,18 +38,9 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
             }
 
 
-
-
-
-
-
-
-
-
-
-
-            // Show details modal for all tables
-
+            /**
+            * Show details modal for all tables
+            */
             function showDetailsModal(obj, tableDescription) {
                 var modal = $('#wdt-md-modal');
                 var modalTitle = tableDescription.masterDetailPopupTitle !== '' ? tableDescription.masterDetailPopupTitle : wdtMdTranslationStrings.modalTitle;
@@ -235,10 +87,11 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
                 modal.modal('show');
             }
 
-
-
-            jQuery(document).on('click','table.wpDataTable tbody tr td:first-child input[type="checkbox"]',function(e){
-
+            
+            /**
+            * Handle compare checkbox click
+            */      
+            jQuery(document).on('click','table.wpDataTable tbody tr td input.wdt_compare_checkbox',function(e){
               if(forcompare.length > 2){
                 jQuery(this).prop("checked", false);
               }
@@ -250,7 +103,10 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               e.stopImmediatePropagation();
             })
 
-            jQuery(document).on('keyup','table.wpDataTable tbody tr td:first-child input[type="checkbox"]', function(e){
+            /**
+            * Handle enter key event on compare checkboxes
+            */
+            jQuery(document).on('keyup','table.wpDataTable tbody tr td input.wdt_compare_checkbox', function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
 
@@ -275,11 +131,17 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               }
             })
 
-
+            /**
+            * Display Compare Modal on Compare button click
+            */
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.compare_button',function(e){
               initiateModal(this,tableDescription);
               e.stopImmediatePropagation();
             })
+            
+            /**
+            * Display Compare Modal on enter key press
+            */
             jQuery(document).on('keyup','.dataTables_compare_button_wrapper a.compare_button',function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
@@ -287,11 +149,18 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
                 e.stopImmediatePropagation();
               }
             })
-
+            
+            /**
+            * Clear compare selections on Clear Compare Button click
+            */
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.clear_compare_button',function(e){
               clearcomparison(tableid);
               e.stopImmediatePropagation();
             })
+            
+            /**
+            * Clear compare selections on Clear Compare Button enter key press
+            */
             jQuery(document).on('keyup','.dataTables_compare_button_wrapper a.clear_compare_button',function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
@@ -300,21 +169,19 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               e.stopImmediatePropagation();
             })
 
-            /*
-            jQuery(document).on('mouseover','.wdt-remove-column',function(e){
-              jQuery(this).parent('.wdt-compare-block-wrapper').addClass('bordered');
-            });
-            jQuery(document).on('mouseout','.wdt-remove-column',function(e){
-              jQuery(this).parent('.wdt-compare-block-wrapper').removeClass('bordered');
-            });
+            /**
+            * Remove column in compare modal throgh x button click
             */
-
             jQuery(document).on('click','.wdt-remove-column',function(e){
               deletecolumn(jQuery(this),tableid,function(){
                 jQuery('.wdt-cd-modal').focus();
                 //setCompareTableWidth();
               });
             })
+            
+            /**
+            * Remove column in compare modal throgh x button enter key press
+            */
             jQuery(document).on('keyup','.wdt-remove-column',function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
@@ -325,49 +192,46 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               }
             })
 
-
-
-
-
+            /**
+            * Set focus back to last active element before opening the  compare modal.
+            */
             jQuery('#wdt-cd-modal').on('hidden.bs.modal', function () {
               jQuery('.wdt-compare-preloader-wrapper').hide(300);
               jQuery('.dataTables_compare_button_wrapper .compare_button').focus();
             });
 
-
+            /**
+            * Make sure previously selected rows are still checked when navigating through pagination.
+            */
             wpDataTables.table_1.addOnDrawCallback(
             function(){
               synccomparechecks(function(){
                 preventfurtherchecks();
               });
-              /*
-                loadcheckboxes(firstheader,thebody, function(){
-                  handleprefixsuffix(function(){
-                    synccomparechecks(function(){
-                      preventfurtherchecks();
-                    });
-                  })
-                })
-              */
             })
 
-
+            /**
+            * Clear Modal contents and set modal aria-hidden attribute to true on close.
+            */
             jQuery("#wdt-cd-modal").on('hide.bs.modal', function(){
               jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').html('');
               jQuery('#wdt-cd-modal').attr('aria-hidden','true');
             });
-
+            
+            /**
+            * Set aria-hidden attribute to false on Modal open.
+            */
             jQuery("#wdt-cd-modal").on('show.bs.modal', function(){
               jQuery('#wdt-cd-modal').attr('aria-hidden','false');
             });
-
+            
             jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
-              jQuery('div[data-orig_header="comparedetail"]').show();
+              jQuery('div[data-orig_header="Compare"]').show();
             });
 
         }else{ // compare disabled
           jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
-            jQuery('div[data-orig_header="comparedetail"]').hide();
+            jQuery('div[data-orig_header="Compare"]').hide();
           });
         }
 
@@ -407,7 +271,8 @@ function deletecolumn(target,tableid,callback){
   target.closest('table').find('th.wdtcomparecol-'+colno).hide();
 
   //jQuery(this).parent('.wdt-compare-block-wrapper').remove();
-  jQuery('#table_'+tableid+'_row_'+dataid+' td:first-child input[type="checkbox"]').prop("checked", false);
+  //jQuery('#table_'+tableid+'_row_'+dataid+' td:first-child input[type="checkbox"]').prop("checked", false);
+  jQuery('#table_'+tableid+'_row_'+dataid+' td input.wdt_compare_checkbox').prop("checked", false);
   removefrommodecompatelist(dataid, function(){
     preventfurtherchecks();
     //adjusmodalcolumnwidth();
@@ -469,117 +334,6 @@ function showCompareModal(obj, tableDescription) {
     modal.modal('show');
 }
 
-/*
-function loadcombinedheader2(firstheader,callback){
-  var old_head_html = ''; var new_head_html = '';
-  var existing_html = jQuery(firstheader).html();
-
-  //create new copy
-  new_head_html = '<div class="wdtTemporaryHolderNew" >';
-    new_head_html += '<table>';
-        new_head_html += '<tr style="background-color:transparent !important;">';
-            new_head_html += '<td class="frst">Compare</td>';
-            new_head_html += '<td class="scnd">';
-                new_head_html += existing_html;
-            new_head_html += '</td>';
-        new_head_html += '</tr>';
-    new_head_html += '</table>';
-  new_head_html += '</div>';
-  jQuery('body').prepend(new_head_html);
-
-
-
-  jQuery.each(jQuery._data(jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child button').get(0), 'events'), function() {
-    // iterate registered handler of original
-      jQuery.each(this, function() {
-          jQuery('.wdtTemporaryHolderNew table tbody tr td.scnd button').bind(this.type, this.handler);
-          jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child button').unbind(this.type);
-      });
-  });
-
-
-  jQuery(firstheader).html(jQuery('.wdtTemporaryHolderNew').html());
-  jQuery('.wdtTemporaryHolderNew').remove();
-
-  if (callback && typeof(callback) === "function") {
-      callback();
-  }
-}
-*/
-
-
-/*
-function loadcombinedheaderfrontend(firstheader,callback){
-
-  //jQuery('<th aria-label="Compare">Compare</th>').insertBefore('.wpDataTablesWrapper table.wpDataTable thead th:first-child');
-
-
-  var head_html = '';
-  var existing_html = jQuery(firstheader).html();
-  head_html = '<table>';
-      head_html += '<tr style="background-color:transparent !important;">';
-          head_html += '<th class="frst" tabindex="0">Compare</th>';
-          head_html += '<th class="scnd" tabindex="0">';
-              head_html += existing_html;
-          head_html += '</th>';
-      head_html += '</tr>';
-  head_html += '</table>';
-  jQuery(firstheader).html(head_html);
-
-
-  jQuery.each(jQuery._data(jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child').get(0), 'events'), function() {
-    jQuery.each(this, function() {
-      //console.log(this.type+' - '+this.handler);
-      jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child table tr th.scnd').bind(this.type, this.handler);
-      jQuery('.wpDataTablesWrapper table.wpDataTable thead th:first-child').unbind(this.type);
-    });
-  });
-
-
-  if (callback && typeof(callback) === "function") {
-      callback();
-  }
-}
-*/
-
-/*
-function loadcheckboxes(firstheader, thebody, callback){
-
-  //jQuery('<td><input type="checkbox" aria-label="Compare Column Header" tabindex="0"/></td>').insertBefore('.wpDataTablesWrapper table.wpDataTable tbody tr td:first-child');
-
-
-  jQuery(thebody).find('tr').each(function() {
-
-    //var id= jQuery(this).attr('ID');
-    //var cell = jQuery("#"+id+">trLfirst-child");
-    //var pfx = window.getComputedStyle(document.querySelector(cell), ':before').getPropertyValue('content');
-    //var sfx = window.getComputedStyle(document.querySelector(cell), ':after').getPropertyValue('content');
-    //console.log(pfx);
-    if(!jQuery(this).find('td:first-child input').length){
-          var curtd = jQuery(this).find('td:first-child');
-          var column_content = curtd.html();
-          var arialabel = jQuery(firstheader).attr('aria-label');
-          var col_html = '';
-          col_html = '<table>';
-              col_html += '<tr style="background-color:transparent !important;">';
-                  col_html += '<td class="frst" ><input type="checkbox" aria-label="Compare Column Header" tabindex="0"/></td>';
-                  col_html += '<td class="scnd" aria-label="'+arialabel+'">'+column_content+'</td>';
-              col_html += '</tr>';
-          col_html += '</table>';
-          jQuery(firstheader).attr("tabindex" , -1);
-          jQuery(firstheader).css("padding" , 0);
-          jQuery(firstheader).removeAttr('aria-label');
-          jQuery(curtd).html(col_html);
-    }
-  });
-
-  if (callback && typeof(callback) === "function") {
-      callback();
-  }
-}
-*/
-
-
 function handleprefixsuffix(callback){
   jQuery('.wpDataTablesWrapper table.wpDataTable >tbody >tr >td:first-child').each(function() {
     var id= jQuery(this).parent('tr').attr('ID');
@@ -601,7 +355,7 @@ function handleprefixsuffix(callback){
 }
 
 function synccomparechecks(callback){
-  jQuery('table.wpDataTable tr td:first-child input[type="checkbox"]').each(function (i, obj) {
+  jQuery('table.wpDataTable tr td input.wdt_compare_checkbox').each(function (i, obj) {
     var rowid = getrowindex(jQuery(this));
     var idxof = forcompare.indexOf(parseInt(rowid))
     if(idxof == -1){
@@ -710,7 +464,7 @@ function retrieveCompareData(obj,tableDescription){
     var table_name = (tableDescription.compareDetailPopupTitle == "")? "Compare Details": tableDescription.compareDetailPopupTitle;
     jQuery.ajax({
 				type:'POST',
-				url: wdt_ajax_compare.ajaxurl,
+				url: wdt_ajax_object.ajaxurl,
         async: true,
 				data: {'action':'extendTableObjectCompareAjax','table_id': tableid},
 				success:function(response){
@@ -802,11 +556,12 @@ function retrieveCompareData(obj,tableDescription){
                             chtml += '<span>';
                             if(dtp == 'link'){
                                 if(btn){
-                                  chtml += '<a href="'+dta+'" target="'+tgt+'"><button class="">'+lnklabel+'</button></a>';
+                                  chtml += '<a href="'+dta+'" typ="btn" target="'+tgt+'"><button class="">'+lnklabel+'</button></a>';
                                 }else{
-                                  chtml += '<a href="'+dta+'" target="'+tgt+'">'+lnklabel+'</a>';
+                                  var inc = dta.includes('||', 0);
+                                  var lbl = (inc)? dta.split('||')[1]: dta;
+                                  chtml += '<a href="'+dta+'" typ="url" target="'+tgt+'">'+lbl+'</a>';
                                 }
-
                             }else{
                                 chtml += dta;
                             }
@@ -829,7 +584,6 @@ function retrieveCompareData(obj,tableDescription){
 
           }
           chtml += '</table>';
-
 
           jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').append(chtml).show('slow')
           jQuery('.wdt-compare-preloader-wrapper').hide(300);
