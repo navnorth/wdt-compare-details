@@ -31,12 +31,16 @@
                     jQuery('.wdt-cd-popup-title-block').show();
                     jQuery('#wdt-cd-click-event-logic').selectpicker('refresh').trigger('change');
                     jQuery('#wdt-cd-render-data-in').selectpicker('refresh').trigger('change');
-
-                    var cnt = 0;
+                    console.log('ENABLED');
+                    var cnt = 0; console.log(wpdatatable_config.columns);
                     for (let column of wpdatatable_config.columns) {
-                        if (column.orig_header === 'comparedetail') {
-                            wpdatatable_config.columns[cnt].visible = 1
-                            //console.log(wpdatatable_config.columns[cnt].visible);
+                        
+                        if (column.orig_header === 'Compare') {
+                            console.log(column.orig_header+' - '+wpdatatable_config.columns[cnt].masterDetailColumnOption);
+                            wpdatatable_config.columns[cnt].visible = 1;
+                            wpdatatable_config.columns[cnt].filter_type = "none";
+                            wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
+                            wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;
                         }
                         cnt++;
                     }
@@ -51,7 +55,18 @@
                     wpdatatable_config.setCompareDetailPopupTitle('');
                     wpdatatable_config.setCompareDetailLogic('row');
                     wpdatatable_config.setCompareDetailRender('popup');
-
+                        
+                    var cnt = 0;
+                    for (let column of wpdatatable_config.columns) {
+                        if (column.orig_header === 'Compare') {
+                            wpdatatable_config.columns[cnt].visible = 0;
+                            wpdatatable_config.columns[cnt].filter_type = "none";
+                            wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
+                            wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;
+                        }
+                        cnt++;
+                    }
+                    
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'comparedetail') {
                             state = true;
@@ -116,7 +131,7 @@
                                 {
                                     type: 'comparedetail',
                                     orig_header: 'comparedetail',
-                                    display_header: 'Compare',
+                                    display_header: 'comparedetail',
                                     pos: wpdatatable_config.columns.length,
                                     details: 'comparedetail',
                                     parent_table: wpdatatable_config
