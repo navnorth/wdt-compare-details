@@ -523,7 +523,7 @@ function retrieveCompareData(obj,tableDescription){
                       var sfx = globalresponse['column'][q]['text_after'];
                       var dec = globalresponse['column'][q]['decimalPlaces'];
                       var lnklabel = globalresponse['column'][q]['linkButtonLabel'];
-
+                      lnklabel = (lnklabel.trim() == '')? 'View':lnklabel;
                       if(vis > 0){
                         var col = globalresponse['column'][q]['orig_header'];
                         var dsp = globalresponse['column'][q]['display_header'];
