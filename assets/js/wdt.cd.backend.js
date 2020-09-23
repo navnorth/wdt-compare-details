@@ -31,12 +31,10 @@
                     jQuery('.wdt-cd-popup-title-block').show();
                     jQuery('#wdt-cd-click-event-logic').selectpicker('refresh').trigger('change');
                     jQuery('#wdt-cd-render-data-in').selectpicker('refresh').trigger('change');
-                    console.log('ENABLED');
-                    var cnt = 0; console.log(wpdatatable_config.columns);
+                    var cnt = 0;
                     for (let column of wpdatatable_config.columns) {
                         
                         if (column.orig_header === 'Compare') {
-                            console.log(column.orig_header+' - '+wpdatatable_config.columns[cnt].masterDetailColumnOption);
                             wpdatatable_config.columns[cnt].visible = 1;
                             wpdatatable_config.columns[cnt].filter_type = "none";
                             wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
