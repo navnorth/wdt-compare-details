@@ -203,6 +203,7 @@ div#wdt-cd-modal div.modal-header {
     position: relative !important;
     box-sizing: border-box;
     padding: 0px !important;
+    width: 100%;
 }
 .wdtcomparerow>span {
     padding: 5px;
