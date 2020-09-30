@@ -2,16 +2,16 @@
 namespace WDTCompareDetail;
 
 /**
- * @package Compare-Detail Tables for wpDataTables
- * @version 1.1.1
+ * @package Compare-Details for wpDataTables
+ * @version 1.0.1
  */
 /*
-Plugin Name: Compare-Detail Tables for wpDataTables
+Plugin Name: Compare-Details for wpDataTables
 Plugin URI: https://wpdatatables.com/documentation/addons/compare-detail/
-Description: A wpDataTables addon which allows showing additional details for a specific row in a popup or a separate page or post. Handy when you would like to keep fewer columns in the table, while allowing user to access full details of particular entries.
-Version: 1.1.1
-Author: TMS-Plugins
-Author URI: http://tms-plugins.com
+Description: A wpDataTables addon which allows comparing details for selected rows in a popup.
+Version: 1.0.1
+Author: Navigation North
+Author URI: https://www.navigationnorth.com
 Text Domain: wpdatatables
 Domain Path: /languages
 */
@@ -31,7 +31,7 @@ define('WDT_CD_ROOT_PATH', plugin_dir_path(__FILE__));
 // URL of WDT Compare-detail plugin
 define('WDT_CD_ROOT_URL', plugin_dir_url(__FILE__));
 // Current version of WDT Compare-detail plugin
-define('WDT_CD_VERSION', '1.1.1');
+define('WDT_CD_VERSION', '1.0.1');
 // Required wpDataTables version
 define('WDT_CD_VERSION_TO_CHECK', '2.8.2');
 // Path to Compare-detail templates
@@ -67,7 +67,7 @@ class Plugin
             add_action('admin_notices', array('WDTCompareDetail\Plugin', 'wdtNotInstalled'));
             return false;
         }
-        
+
         // Add JS and CSS for editable tables on backend
         add_action('wdt_enqueue_on_edit_page', array('WDTCompareDetail\Plugin', 'wdtCompareDetailEnqueueBackendCompare'));
 
@@ -75,7 +75,7 @@ class Plugin
         add_action('wdt_enqueue_on_frontend', array('wdtCompareDetail\Plugin', 'wdtCompareDetailEnqueueFrontendCompare'));
 
 
-        
+
         // Add "Compare-Detail" tab on table configuration page
         add_action('wdt_add_table_configuration_tab', array('WDTCompareDetail\Plugin', 'addCompareDetailSettingsTabCompare'));
 
@@ -93,34 +93,34 @@ class Plugin
 
         // Extend WPDataTable Object with new properties
         add_action('wdt_extend_wpdatatable_object', array('wdtCompareDetail\Plugin', 'extendTableObjectCompare'), 10, 2);
-        
 
 
-        
+
+
         // Extend table description before returning it to the front-end
         add_filter('wpdatatables_filter_table_description', array('wdtCompareDetail\Plugin', 'extendJSONDescription'), 10, 3);
-        
+
         // Add custom modal in DOM
         add_action('wpdatatables_add_custom_modal', array('wdtCompareDetail\Plugin', 'insertModal'), 10, 1);
-        
+
         // Add custom modal in DOM
         //add_action('wpdatatables_add_custom_template_modal', array('wdtCompareDetail\Plugin', 'insertTemplateModal'), 10, 1);
-        
-        
+
+
 
         // Prepare column data
         //add_filter('wpdatatables_prepare_column_data', array('wdtCompareDetail\Plugin', 'prepareColumnDataCompare'), 10, 2);
 
         // Custom populate cells
         //add_action('wpdatatables_custom_populate_cells', array('wdtCompareDetail\Plugin', 'fillCellsCompareDetailCompare'), 10, 2);
-        
+
         // Custom prepare output data
         //add_filter('wpdatatables_custom_prepare_output_data', array('WDTCompareDetail\Plugin', 'prepareOutputDataCompareDetailsCompare'), 10, 5);
-        
-        
-        
-        
-/*        
+
+
+
+
+/*
         // Disable wpdatatables features fro new column(sorting,searching and filtering)
         add_action('wpdatatables_columns_from_arr', array('wdtCompareDetail\Plugin', 'setColumnDetailsCompare'), 10, 4);
 */
@@ -138,17 +138,17 @@ class Plugin
 
         // Filter the content with detail placehodlers
         add_filter( 'the_content', array('wdtCompareDetail\Plugin', 'filterTheContentCompare'));
-*/        
+*/
 
 
-        
+
 /*
         // Filter column JSON definition
         add_filter('wpdatatables_extend_column_js_definition', array('wdtCompareDetail\Plugin', 'extendColumnJSONDefinition'), 10, 2);
-        
+
         // Filter data column properties
         add_filter('wpdt_filter_data_column_properties', array('wdtCompareDetail\Plugin', 'extendDataColumnProperties'), 10, 3);
-             
+
         // Filter column params
         add_filter('wpdt_filter_column_params', array('wdtCompareDetail\Plugin', 'extendColumnParams'), 10, 2);
 
@@ -168,22 +168,22 @@ class Plugin
 
 
 
-        
+
         // Extend datacolumn object
         add_filter('wpdatatables_extend_datacolumn_object', array('wdtCompareDetail\Plugin', 'extendDataColumnObject'), 10, 2);
-        
+
         // Extend small column block
         add_action('wpdt_add_small_column_block', array('WDTCompareDetail\Plugin', 'addCompareDetailSmallBlack'));
 
         // Add Compare-Detail activation setting
         add_action('wdt_add_activation', array('WDTCompareDetail\Plugin', 'addCompareDetailActivation'));
-        
-        
-        
+
+
+
 /*
         // Enqueue Compare-Detail add-on files on back-end settings page
         add_action('wdt_enqueue_on_settings_page', array('WDTCompareDetail\Plugin', 'wdtCompareDetailEnqueueBackendSettings'));
-        
+
         // Check auto update
         add_filter('pre_set_site_transient_update_plugins', array('WDTCompareDetail\Plugin', 'wdtCheckUpdateCompareDetail'));
 
@@ -203,17 +203,17 @@ class Plugin
 
         // Add JS For Compare Plugin
         add_action('wpdatatables_after_table', array('WDTCompareDetail\Plugin', 'wdtCompareDetailEnqueueBackendafterrender'), 10, 4);
-        
-        
+
+
         //textStatus
         add_action('wpdatatables_filter_excel_array', array('WDTCompareDetail\Plugin', 'wdtInsertColumn'), 10, 4);
-        
-        
-        
-        
+
+
+
+
         require_once(WDT_CD_ROOT_PATH . 'controllers/wdt_ajax_compare_actions.php');
-        
-        
+
+
 
         // Check if wpDataTables required version is installed
         if (version_compare(WDT_CURRENT_VERSION, WDT_CD_VERSION_TO_CHECK) < 0) {
@@ -221,31 +221,26 @@ class Plugin
             add_action('admin_notices', array('WDTCompareDetail\Plugin', 'wdtRequiredVersionMissing'));
             return false;
         }
-        
+
         self::createNewColumnTypeCompare();
 
         return self::$initialized = true;
-        
+
     }
-    
-    
+
+
     public static function wdtInsertColumn($namedDataArray, $wpid, $xls_url){
-      
+
       $tableData = WDTConfigController::loadTableFromDB($wpid);
       $advancedSettingsTable = json_decode($tableData->advanced_settings);
-      //print_r('WOW');
-      //print_r($advancedSettingsTable->compareDetail." - ".isset($advancedSettingsTable->compareDetail));
-      
-      //if (isset($advancedSettingsTable->compareDetail) && $advancedSettingsTable->compareDetail > 0) {
-        foreach($namedDataArray as $i => $item) {
-            $namedDataArray[$i] = array('Compare'=>'<input type="checkbox" aria-label="Compare Column Header" tabindex="0"/>') + $namedDataArray[$i];    
-        }
-      //}
-      
+
+      foreach($namedDataArray as $i => $item) {
+          $namedDataArray[$i] = array('Compare'=>'<input type="checkbox" aria-label="Compare Column Header" tabindex="0"/>') + $namedDataArray[$i];
+      }
+
       return $namedDataArray;
-      
     }
-    
+
     /**
      *  Filter Columns CSS
      * @param $columnsCSS
@@ -374,7 +369,7 @@ class Plugin
      */
     public static function extendColumnOptions($columnOptions, $columnData)
     {
-        
+
         foreach ($columnData as $column) {
             $advancedSettings = json_decode($column->advanced_settings);
 
@@ -586,7 +581,7 @@ class Plugin
     public static function populateDetailsCellsCompare($obj)
     {
         foreach (array_keys($obj->getWdtColumnTypes(), 'comparedetail') as $column_key) {
-            
+
             $allDataRows = $obj->getDataRows();
             foreach ($allDataRows as &$row) {
                 try {
@@ -613,7 +608,7 @@ class Plugin
     public static function prepareOutputDataCompareDetailsCompare($output, $obj, $main_res_dataRows, $wdtParameters, $colObjs)
     {
         $output = [];
-        
+
         if (!empty($main_res_dataRows)) {
             foreach ($wdtParameters['foreignKeyRule'] as $columnKey => $foreignKeyRule) {
                 if ($foreignKeyRule != null) {
@@ -691,9 +686,9 @@ class Plugin
      */
     public static function prepareColumnDataCompare($returnArray, $column)
     {
-        
-      
-        
+
+
+
         if ($column->type === 'comparedetail') {
             $returnArray['columnTypes'][$column->orig_header] = $column->type;
         }
@@ -710,19 +705,19 @@ class Plugin
      */
     public static function insertModal($wpDataTable)
     {
-        
+
         if (isset($wpDataTable->compareDetail) && $wpDataTable->compareDetail && is_admin()) {
             //include WDT_CD_TEMPLATE_PATH . 'modal.inc.php';
             //include WDT_CD_TEMPLATE_PATH . 'cd_modal.inc.php';
         } else if (isset($wpDataTable->compareDetail) && $wpDataTable->compareDetail){
             //include WDT_CD_TEMPLATE_PATH . 'cd_modal.inc.php';
         }
-        
-        
-      
+
+
+
         include WDT_CD_TEMPLATE_PATH . 'compare_detail_modal.inc.php';
         include WDT_CD_TEMPLATE_PATH . 'style_compareblock.inc.php';
-        
+
     }
 
     /**
@@ -751,8 +746,8 @@ class Plugin
         $message = __('Compare-Detail Tables add-on for wpDataTables requires wpDataTables version ' . WDT_CD_VERSION_TO_CHECK . '. Please update wpDataTables plugin to be able to use it!', 'wpdatatables');
         echo "<div class=\"error\"><p>{$message}</p></div>";
     }
-    
-    
+
+
     /**
      * Enqueue Compare-detail JS
      */
@@ -765,10 +760,10 @@ class Plugin
             wp_dequeue_script( 'wdt-column-config' );
             wp_deregister_script( 'wdt-column-config' );
             wp_enqueue_script('wdt-column-config', WDT_CD_ROOT_URL . 'assets/js/column_config_object.js', array(), WDT_CD_VERSION, true);
-            
+
         }
     }
-    
+
     /**
      * Enqueue Compare-detail add-on files on back-end
      */
@@ -795,16 +790,17 @@ class Plugin
                 WDT_CD_VERSION,
                 true
             );
+            wp_localize_script( 'wdt-cd-backend', 'wdt_ajax_compare_backend', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
-            
+
             function is_admin() {
               echo '<script>';
                 echo 'var page_is_admin = true;';
               echo '</script>';
             }
-            
+
         }
     }
 
@@ -813,9 +809,9 @@ class Plugin
      */
     public static function wdtCompareDetailEnqueueFrontendCompare()
     {
-      
+
         if (self::$initialized) {
-            
+
             wp_enqueue_script(
                 'wdt-cd-frontend',
                 WDT_CD_ROOT_URL . 'assets/js/wdt.cd.frontend.js',
@@ -833,9 +829,9 @@ class Plugin
 
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
-            
-            
-            
+
+
+
         }
     }
 
@@ -872,8 +868,8 @@ class Plugin
      * @param $tableData \stdClass
      */
     public static function extendTableObjectCompare($wpDataTable, $tableData)
-    {  
-      
+    {
+
         if (!empty($tableData->advanced_settings)) {
             $advancedSettings = json_decode($tableData->advanced_settings);
 
@@ -902,8 +898,8 @@ class Plugin
             }
 
         }
-        
-        
+
+
     }
 
     /**
@@ -916,7 +912,7 @@ class Plugin
     public static function extendJSONDescription($tableDescription, $tableId, $wpDataTable)
     {
 
-        
+
         if (isset($wpDataTable->compareDetail)) {
             $tableDescription->compareDetail = $wpDataTable->compareDetail;
         }
@@ -1170,8 +1166,8 @@ class Plugin
         $columnPosition   = '';
         $tableID          = '';
         foreach ($allTablesIDWithCD as $tableIDWithCD) {
-            $query = "SELECT id, table_id, orig_header, pos 
-                          FROM {$wpdb->prefix}wpdatatables_columns 
+            $query = "SELECT id, table_id, orig_header, pos
+                          FROM {$wpdb->prefix}wpdatatables_columns
                           WHERE {$wpdb->prefix}wpdatatables_columns.table_id = {$tableIDWithCD}";
 
             $tempColumnFields= $wpdb->get_results($query, ARRAY_A);
@@ -1367,5 +1363,5 @@ class Plugin
 
         return $reply;
     }
-  
+
 }

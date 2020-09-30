@@ -277,7 +277,6 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
             
             
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.compare_button',function(e){  
-              console.log(forcompare);  
               initiateModal(this,tableDescription);        
               e.stopImmediatePropagation();
             })
@@ -313,6 +312,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
             jQuery(document).on('click','.wdt-remove-column',function(e){          
               deletecolumn(jQuery(this),tableid,function(){
                 jQuery('.wdt-cd-modal').focus();
+                //setCompareTableWidth();
               });          
             })  
             jQuery(document).on('keyup','.wdt-remove-column',function(e){
@@ -320,6 +320,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
               if(keyCode == 13){
                 deletecolumn(jQuery(this),tableid,function(){
                   jQuery('#wdt-cd-modal').focus();
+                  //setCompareTableWidth();
                 });
               }
             })
@@ -359,7 +360,15 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModal(tableDescription
             jQuery("#wdt-cd-modal").on('show.bs.modal', function(){
               jQuery('#wdt-cd-modal').attr('aria-hidden','false');
             });
-
+              
+            jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
+              jQuery('div[data-orig_header="Compare"]').show();
+            });
+            
+        }else{ // compare disabled
+          jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
+            jQuery('div[data-orig_header="Compare"]').hide();
+          });
         }
       
     })(jQuery);
@@ -696,7 +705,7 @@ function getrowindex(obj){
 
 
 function retrieveCompareData(obj,tableDescription){
-    var tableid = obj.closest('.wpDataTablesWrapper').children('table.wpDataTable').attr('data-wpdatatable_id');
+    var tableid = obj.closest('.wpDataTablesWrapper').find('table.wpDataTable').attr('data-wpdatatable_id');
     globalresponse = 0;
     var table_name = (tableDescription.compareDetailPopupTitle == "")? "Compare Details": tableDescription.compareDetailPopupTitle;
     jQuery.ajax({
@@ -970,7 +979,6 @@ jQuery(window).resize(function(){
     adjustrowheight();
   },300);
 });
-
 
 
 
