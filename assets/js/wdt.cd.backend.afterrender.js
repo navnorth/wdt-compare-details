@@ -15,6 +15,15 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             var firstheader = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead>tr>th:first-child';
             var firstcolumn = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody>tr>td:first-child';
 
+            if(tableDescription.masterDetailLogic == 'row'){
+              thebody.unbind();
+              thebody.on('click', 'tr', function (e) {
+                  if(e.target.nodeName == 'TD'){
+                    showDetailsModal(this, tableDescription);
+                  }  
+              });
+            }
+          
             jQuery('.master_detail_column_btn').attr('role','button');
             thebody.attr('logic',tableDescription.masterDetailLogic);
 
@@ -82,7 +91,6 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                     $columnValue.html(val);
 
                 });
-                jQuery('#wdt-md-modal .modal-dialog').removeClass('compare');
                 modal.find('.modal-body').append($(tableDescription.selector + '_md_dialog').show());
                 modal.modal('show');
             }
