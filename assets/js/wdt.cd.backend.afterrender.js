@@ -538,16 +538,15 @@ function retrieveCompareData(obj,tableDescription){
                         if(left_header == col){
 
                           var dta = globalresponse['data'][fcmp][col];
-                          if(dta !== null){
+                          if(dta !== null){                  
                             if(dtp == 'float'){
-
-                              if(dec){
-                                dta = thousands_separators(addZeroes(parseFloat(dta).toFixed(2)));
+                              if(!isNaN(dta)){
+                                dta = (dec)? thousands_separators(addZeroes(parseFloat(dta).toFixed(2))) : thousands_separators(parseFloat(dta));
+                                dta = pfx+dta+sfx;
                               }else{
-                                dta = thousands_separators(parseFloat(dta));
+                                dta = '';
                               }
-                            }
-                            dta = pfx+dta+sfx;
+                            }          
                           }else{
                             dta = '';
                           }
