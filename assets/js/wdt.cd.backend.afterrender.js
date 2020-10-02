@@ -14,7 +14,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             var theheadtr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead tr');
             var firstheader = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead>tr>th:first-child';
             var firstcolumn = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody>tr>td:first-child';
-
+            
+            /* Fix to checkbox conflict with master detail row click */
             if(tableDescription.masterDetailLogic == 'row'){
               thebody.unbind();
               thebody.on('click', 'tr', function (e) {
