@@ -35,7 +35,6 @@
                     for (let column of wpdatatable_config.columns) {
                         
                         if (column.orig_header === 'Compare') {
-                            wpdatatable_config.columns[cnt].visible = 1;
                             wpdatatable_config.columns[cnt].filter_type = "none";
                             wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
                             wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;
@@ -57,7 +56,6 @@
                     var cnt = 0;
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'Compare') {
-                            wpdatatable_config.columns[cnt].visible = 0;
                             wpdatatable_config.columns[cnt].filter_type = "none";
                             wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
                             wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;

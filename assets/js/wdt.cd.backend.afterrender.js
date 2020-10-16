@@ -1,6 +1,7 @@
 var forcompare = [];
 var globalresponse = 0;
 var msg_timer;
+var max_compare_len = 3;
 
 wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDescription) {
     (function ($) {
@@ -37,14 +38,18 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
 
             var thebodytr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody tr td:nth-of-type(1)');
             function insertCompareButton(){
-              var html = '<div class="dataTables_compare_button_wrapper">';
-                  html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
-                  html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
-                  html += '</div>';
-              jQuery( html).insertBefore( '.wpDataTablesWrapper .dataTables_filter label');
+              if(!jQuery('.dataTables_compare_button_wrapper').length){
+                var html = '<div class="dataTables_compare_button_wrapper">';
+                    html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
+                    html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
+                    html += '</div>';
+                jQuery( html).insertBefore( '.wpDataTablesWrapper .dataTables_filter label');
 
-              html = '<div class="dataTables_compare_message" style="display:none;"><span class="dashicons dashicons-warning"></span><span class="cmpr_content"></span></div>';
-              jQuery( html).insertAfter( '.wpDataTablesWrapper .dataTables_filter');
+                html = '<div class="dataTables_compare_message" style="display:none;"><span class="dashicons dashicons-warning"></span><span class="cmpr_content"></span></div>';
+                if (!jQuery('.dataTables_compare_message').length) {
+                  jQuery( html).insertAfter( '.wpDataTablesWrapper .dataTables_filter');
+                }
+              }
             }
 
 
@@ -101,7 +106,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             * Handle compare checkbox click
             */      
             jQuery(document).on('click','table.wpDataTable tbody tr td input.wdt_compare_checkbox',function(e){
-              if(forcompare.length > 2){
+              if(forcompare.length > (max_compare_len - 1)){
                 jQuery(this).prop("checked", false);
               }
 
@@ -119,7 +124,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
 
-                if(forcompare.length > 2){
+                if(forcompare.length > (max_compare_len - 1)){
                   jQuery(this).prop("checked", false);
                 }else{
                   if(jQuery(this).is(":checked")){
@@ -184,6 +189,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             jQuery(document).on('click','.wdt-remove-column',function(e){
               deletecolumn(jQuery(this),tableid,function(){
                 jQuery('.wdt-cd-modal').focus();
+                adjusmodalcolumnwidth();
                 //setCompareTableWidth();
               });
             })
@@ -208,23 +214,15 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               jQuery('.wdt-compare-preloader-wrapper').hide(300);
               jQuery('.dataTables_compare_button_wrapper .compare_button').focus();
             });
-
-            /**
-            * Make sure previously selected rows are still checked when navigating through pagination.
-            */
-            wpDataTables.table_1.addOnDrawCallback(
-            function(){
-              synccomparechecks(function(){
-                preventfurtherchecks();
-              });
-            })
-
+            
             /**
             * Clear Modal contents and set modal aria-hidden attribute to true on close.
             */
             jQuery("#wdt-cd-modal").on('hide.bs.modal', function(){
               jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').html('');
               jQuery('#wdt-cd-modal').attr('aria-hidden','true');
+              jQuery('.wdt-compare-modal-body-content').removeClass('enola');
+              jQuery('.wdt-compare-modal-body-content').removeAttr('style');
             });
             
             /**
@@ -234,25 +232,85 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               jQuery('#wdt-cd-modal').attr('aria-hidden','false');
             });
             
-            jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
-              jQuery('div[data-orig_header="Compare"]').show();
-            });
-
-        }else{ // compare disabled
-          jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
-            jQuery('div[data-orig_header="Compare"]').hide();
-          });
+            
+            /**
+            * Make sure previously selected rows are still checked when navigating through pagination.
+            */
+            wpDataTables.table_1.addOnDrawCallback(
+            function(){
+              synccomparechecks(function(){
+                preventfurtherchecks();
+              });
+            })
+            
         }
 
     })(jQuery);
 
-
-
 });
+
+/**
+ *  Create visibility toggle variable on column settings save
+ */
+jQuery('#wdt-columns-list-modal #wdt-apply-columns-list').click(function (e) {
+  jQuery.ajax({type:'POST',url: wdt_ajax_object.ajaxurl,async: true,data: {'action':'setVisibilitySession'},success:function(response){}});
+});
+
+/**
+ *  Create visibility toggle variable on save
+ */
+jQuery('#wdt-column-settings-buttons .wdt-column-apply').click(function (e) {
+  jQuery.ajax({type:'POST',url: wdt_ajax_object.ajaxurl,async: true,data: {'action':'setVisibilitySession'},success:function(response){}});
+});
+
+/**
+ *  Observe opening of column settings modal and set which tabs are visible for compare addon.
+ */
+ var observer = new MutationObserver(function(mutations) {
+    hidecolumnsettingstab();
+});
+var target = document.querySelector('.column-settings-overlay');
+observer.observe(target, {
+  attributes: true
+});
+function hidecolumnsettingstab(){
+  try {
+    if(wpdatatable_config.currentOpenColumn.orig_header != null){
+      let curOpen = wpdatatable_config.currentOpenColumn.orig_header;
+      if(curOpen == 'Compare'){
+        jQuery('li.column-filtering-settings-tab').hide();
+        jQuery('li.column-sorting-settings-tab').hide();
+        jQuery('li.column-conditional-formatting-settings-tab').hide();
+      }
+    }
+  }catch(err) {
+    //document.getElementById("demo").innerHTML = err.message;
+  }
+}
+
+/**
+* Hide Compare Modal Column Settngs
+*/
+jQuery("#wdt-columns-list-modal").on('show.bs.modal', function(){
+  var tableDescription = getTblDesc();
+  if(tableDescription.compareDetail){
+    jQuery('div[data-orig_header="Compare"]').show();
+  }else{
+    jQuery('div[data-orig_header="Compare"]').hide();
+  }
+});
+
+/**
+* Retrieve Table Advanced Settings
+*/
+function getTblDesc(){
+  return jQuery.parseJSON(jQuery('input#table_1_desc').val());
+}
 
 wdtNotify = wdtFunctionExtend(wdtNotify,function(){
   synccomparechecks();
 });
+
 
 function clearcomparison(tableid){
   compare_message();
@@ -278,12 +336,18 @@ function deletecolumn(target,tableid,callback){
 
   target.closest('table').find('td.wdtcomparecol-'+colno).hide();
   target.closest('table').find('th.wdtcomparecol-'+colno).hide();
-
+  
   //jQuery(this).parent('.wdt-compare-block-wrapper').remove();
   //jQuery('#table_'+tableid+'_row_'+dataid+' td:first-child input[type="checkbox"]').prop("checked", false);
   jQuery('#table_'+tableid+'_row_'+dataid+' td input.wdt_compare_checkbox').prop("checked", false);
   removefrommodecompatelist(dataid, function(){
     preventfurtherchecks();
+    if(forcompare.length == 0){
+      jQuery('.wdt-compare-modal-body-content').addClass('enola');
+    }else{
+      jQuery('.wdt-compare-modal-body-content').removeClass('enola');
+      jQuery('.wdt-compare-modal-body-content').removeAttr('style');
+    }
     //adjusmodalcolumnwidth();
   });
   if (callback && typeof(callback) === "function") {
@@ -399,7 +463,7 @@ function addtomodcomparelist(target,dataid,callback){
       forcompare.push(dataid);
     }else{
       removefrommodecompatelist(dataid,function(){
-        if(forcompare.length > 2){
+        if(forcompare.length > (max_compare_len - 1)){
           compare_message('Maximum of 3 schools can be compared.');
         }
       });
@@ -412,7 +476,7 @@ function addtomodcomparelist(target,dataid,callback){
 
 function preventfurtherchecks(){
 
-  if(forcompare.length > 2){
+  if(forcompare.length > (max_compare_len - 1)){
     jQuery('table.wpDataTable tr td:first-child input[type="checkbox"]').each(function (i, obj) {
       if(jQuery(this).prop("checked")){
         jQuery(this).prop('disabled', false);
@@ -477,18 +541,16 @@ function retrieveCompareData(obj,tableDescription){
         async: true,
 				data: {'action':'extendTableObjectCompareAjax','table_id': tableid},
 				success:function(response){
-
 					globalresponse = JSON.parse(response);
           var alldata = [];
 
-
           var chtml = '<table arial-label="'+table_name+'">';
           chtml += '<tr>';
-          chtml += '<td class="wdtcomparerow wdtcomparecol-0 hdr" tabindex="-1"></td>';
+          chtml += '<td class="wdtcomparerow wdtcomparerow-0 wdtcomparecol-0 hdr" tabindex="-1" hdr></td>';
           for (var w = 0; w < forcompare.length; w++) {
               colno = w + 1;
               var fcmp = forcompare[w];
-              chtml += '<td class="wdtcomparerow wdtcomparecol-'+colno+' hdr" tabindex="-1">';
+              chtml += '<td class="wdtcomparerow wdtcomparerow-0 wdtcomparecol-'+colno+' dtl" tabindex="-1">';
                 chtml += '<a class="wdt-remove-column" role="button" tabindex="0" aria-label="Remove column '+colno+' from comparison" fcmp="'+fcmp+'" col="'+colno+'">';
                   chtml += '<span class="dashicons dashicons-dismiss" tabindex="-1"></span>';
                 chtml += '</a>';
@@ -510,8 +572,9 @@ function retrieveCompareData(obj,tableDescription){
                 var left_header = globalresponse['column'][x]['orig_header'];
 
                 if(left_header != 'Compare'){
+                  
                   var left_display_header = globalresponse['column'][x]['display_header'];
-                  chtml += '<th class="wdtcomparerow wdtcomparerow-'+0+'" scope="row" >';
+                  chtml += '<th class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-0 hdr" scope="row" >';
                   chtml += '<span>';
                   chtml += left_display_header;
                   chtml += '</span>';
@@ -553,14 +616,14 @@ function retrieveCompareData(obj,tableDescription){
                           }
 
                           if(colrw == 1){
-                            chtml += '<th class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+'"  scope="col">';
+                            chtml += '<th class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+' dtl"  scope="col">';
                             chtml += '<span>';
                             chtml += dta;
                             chtml += '</span>';
                             //chtml += '<div class="wdt-remove-column" tabindex="0" role="button" aria-label="Remove column '+colno+': '+dsp+' '+dta+' from comparison" fcmp="'+fcmp+'" col="'+colno+'"><span class="dashicons dashicons-dismiss"></span><div class="wdt-compare-tooltip"><span class="wdt-compare-tooltiptext">Remove</span></div></div>';
                             chtml += '</th>';
                           }else{
-                            chtml += '<td class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+'" >';
+                            chtml += '<td class="wdtcomparerow wdtcomparerow-'+colrw+' wdtcomparecol-'+colno+' dtl" >';
                             chtml += '<span>';
                             if(dtp == 'link'){
                                 if(btn){
@@ -593,97 +656,17 @@ function retrieveCompareData(obj,tableDescription){
           }
           chtml += '</table>';
 
-          jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').append(chtml).show('slow')
-          jQuery('.wdt-compare-preloader-wrapper').hide(300);
-
-
-				},
-				error: function(xhr, textStatus, errorThrown) {
-           var errorMessage = xhr.status + ': ' + xhr.statusText
-				   alert(errorMessage);
-				}
-		});
-
-
-}
-
-/*
-function retrieveCompareData(obj,tableDescription){
-    var tableid = obj.closest('.wpDataTablesWrapper').children('table.wpDataTable').attr('data-wpdatatable_id');
-    globalresponse = 0;
-    jQuery.ajax({
-				type:'POST',
-				url: wdt_ajax_compare.ajaxurl,
-        async: true,
-				data: {'action':'extendTableObjectCompareAjax','table_id': tableid},
-				success:function(response){
-					globalresponse = JSON.parse(response);
-          var alldata = [];
-
-          //column
-          var cdcolhtml = '';
-          var colrw = 1;
-          colArrayLength = globalresponse['column'].length;
-          for (var x = 0; x < colArrayLength; x++) {
-              var vis = globalresponse['column'][x]['compareDetailColumnOption']
-              if(vis > 0){
-                var col = globalresponse['column'][x]['display_header'];
-                var cls = (isOdd(colrw))?'odd':'even';
-                cdcolhtml += '<tr><td class="wdtcomparerow wdtcomparerow-'+colrw+' '+cls+'"><strong>'+col+'</strong></td></tr>';
-                colrw++;
-              }
-
-          }
-
-          alldata[0] = '<div class="wdt-compare-block column"><table>'+cdcolhtml+'</table></div>';
-
-          //Data
-          var cddetailhtml = []; cnt = 0;
-          var forcomparelength = forcompare.length;
-          for (var y = 0; y < forcomparelength; y++) {
-              var fcmp = forcompare[y];
-              var tmpHtml = '';
-
-              var datarw = 1;
-              for (var q = 0; q < colArrayLength; q++) {
-                  var vis = globalresponse['column'][q]['compareDetailColumnOption'];
-                  var pfx = globalresponse['column'][q]['text_before'];
-
-                  var sfx = globalresponse['column'][q]['text_after'];
-                  if(vis > 0){
-                    var col = globalresponse['column'][q]['orig_header'];
-                    var dta = (globalresponse['data'][fcmp][col] === null)? '': globalresponse['data'][fcmp][col];
-                    var cls = (isOdd(datarw))?'odd':'even';
-                    tmpHtml += '<tr><td class="wdtcomparerow wdtcomparerow-'+datarw+' '+cls+'">'+pfx+dta+sfx+'</td></tr>';
-                    datarw++;
-                  }
-              }
-
-
-              cddetailhtml[cnt]  = '<div class="wdt-compare-block data"><table>'+tmpHtml+'</table></div>';
-              cddetailhtml[cnt] += '<div class="wdt-remove-column" fcmp="'+fcmp+'">';
-                cddetailhtml[cnt] += '<span class="dashicons dashicons-dismiss"></span>';
-                cddetailhtml[cnt] += '<div class="wdt-compare-tooltip">';
-                  cddetailhtml[cnt] += '<span class="wdt-compare-tooltiptext">Remove</span>';
-                cddetailhtml[cnt] += '</div>';
-              cddetailhtml[cnt] += '</div>';
-
-
-
-              cnt++;
-          }
-
-
-          alldata[1] = cddetailhtml;
-
-          displayComparisonData(alldata,tableDescription, function(){
-            synccomparechecks();
-            setTimeout(function(){
-              adjustrowheight();
-              jQuery('.wdt-compare-preloader-wrapper').hide(300);
-            }, 500);
-
+          jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').append(chtml).show('slow',function(){
+            adjusmodalcolumnwidth(function(){
+              adjustrowheight(function(){
+                jQuery('.wdt-compare-preloader-wrapper').hide(300);
+                //setTimeout(function(){ adjusmodalcolumnwidth(); }, 100000);
+              });
+            });
           });
+          
+          
+          
 
 
 				},
@@ -695,82 +678,46 @@ function retrieveCompareData(obj,tableDescription){
 
 
 }
-*/
 
 
 function isOdd(num) { return num % 2;}
-
-function adjusmodalcolumnwidth(){
+function adjusmodalcolumnwidth(callback){
   var forcomparelength = forcompare.length;
   var colwidth = 100/(parseInt(forcomparelength) + 1);
   jQuery('.wdtcomparerow.hdr').css('width',colwidth+'%');
+  if (callback && typeof(callback) === "function") {
+      callback();
+  }
 }
 
 function adjustrowheight(callback){
-
-  if(typeof globalresponse['column'] !== 'undefined' && forcompare.length > 0){
-
-    jQuery('.wdt-compare-block table tr td.wdtcomparerow').css({'height':''});
-    var colArrayLength = globalresponse['column'].length;
-    var rowcnt = 1;
-    for (var e = 0; e < colArrayLength; e++) {
-      var vis = globalresponse['column'][e]['compareDetailColumnOption']
-      if(vis > 0){
-        //console.log(".wdtcomparerow-"+rowcnt);
-        var maxheight = 0;
-        jQuery(".wdtcomparerow-"+rowcnt).each(function(){
-            //console.log('rowcnt-'+rowcnt);
-            var curheight = jQuery(this).height();
-            maxheight = (curheight > maxheight)? curheight: maxheight;
-            //console.log(rowcnt+'--'+curheight);
-            jQuery(".wdtcomparerow-"+rowcnt).height(maxheight);
-        });
-        rowcnt++;
-        //console.log('MAX:'+maxheight)
-        //console.log('-------------------');
-      }
-    }
-
-    var forcomparelength = forcompare.length;
-    //console.log(forcomparelength);
-    var colwidth = 100/(parseInt(forcomparelength) + 1);
-    jQuery('.wdt-compare-block-wrapper').css('width',colwidth+'%');
-
-  }else{
-    jQuery('.wdt-compare-block-wrapper').css('width','100%');
-  }
-
+  jQuery(".wdtcomparerow").css('height','auto');
+  jQuery(".wdt-compare-modal-body-content table tr").each(function(i, l_row){
+    var maxheight = 0;
+    jQuery(".wdtcomparerow-"+i).each(function(j, l_col){
+      var curheight = jQuery(l_col).height();
+      maxheight = (curheight > maxheight)? curheight: maxheight;
+      jQuery(".wdtcomparerow-"+i).height(maxheight);
+    });
+  });
+  
   if (callback && typeof(callback) === "function") {
       callback();
   }
 
 }
 
-/*
-function displayComparisonData(alldata,tableDescription,callback){
-  var modal = jQuery('#wdt-cd-modal');
-  var columnhtml = '<div class="wdt-compare-block-wrapper">'+alldata[0]+'</div>';
-  for (var i = 0; i < alldata[1].length; i++) {
-      columnhtml += '<div class="wdt-compare-block-wrapper">'+alldata[1][i]+'</div>';
-  }
-  modal.find('.wdt-compare-modal-body-content').append(columnhtml).show('slow',function(){
-    if (callback && typeof(callback) === "function") {
-        callback();
-    }
-  });
-
-}
-*/
-
-
-
 
 var a;
 jQuery(window).resize(function(){
-  clearTimeout(a);
-  a = setTimeout(function(){
-    adjustrowheight();
-  },300);
+  if(jQuery('#wdt-cd-modal').is(":visible")){
+    clearTimeout(a);
+    a = setTimeout(function(){
+      adjusmodalcolumnwidth(function(){
+        adjustrowheight();
+      });
+    },300);
+  }
 });
 
 
@@ -784,4 +731,3 @@ function addZeroes(num) {
   const len = dec && dec.length > 2 ? dec.length : 2
   return Number(num).toFixed(len)
 }
-

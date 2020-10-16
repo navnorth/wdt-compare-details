@@ -1,6 +1,6 @@
 <?php
 namespace WDTCompareDetail;
-
+session_start();
 /**
  * @package Compare-Details for wpDataTables
  * @version 1.0.4
@@ -120,8 +120,11 @@ class Plugin
         // Add JS For Compare Plugin
         add_action('wpdatatables_after_table', array('WDTCompareDetail\Plugin', 'wdtCompareDetailEnqueueBackendafterrender'), 10, 4);
 
-        //textStatus
+        //Add Compare Column while CSV data loads from DB
         add_action('wpdatatables_filter_excel_array', array('WDTCompareDetail\Plugin', 'wdtInsertColumn'), 10, 4);
+
+        //Hide Compare Column on very first load
+        add_action('wpdatatables_before_get_columns_metadata', array('WDTCompareDetail\Plugin', 'extendCompareTableMetadata'), 10, 1);
 
 
         require_once(WDT_CD_ROOT_PATH . 'controllers/wdt_ajax_compare_actions.php');
@@ -137,17 +140,65 @@ class Plugin
         return self::$initialized = true;
 
     }
+    
+    /**
+     *  Make sure settings persists on page refresh
+     */
+    public static function extendCompareTableMetadata($tableId){
+      global $wpdb;
+      
+      $_result = $wpdb->get_results("SELECT advanced_settings FROM ".$wpdb->prefix."wpdatatables WHERE id = ".$tableId, ARRAY_A);
+      $_tmpadvset = json_decode($_result[0]['advanced_settings']);
+      $_tmpadvset->compareDetailColumnOption = 0;
+      $_tmpadvset->masterDetailColumnOption = 0;
+      $_tmpadvset->sorting = 0;
+      $_tmpadvset = json_encode($_tmpadvset);
+      $wpdb->update($wpdb->prefix."wpdatatables_columns", array('advanced_settings'=>$_tmpadvset), array('table_id' => $tableId, 'orig_header' => 'Compare'));
+      $wpdb->update($wpdb->prefix."wpdatatables_columns", array('filter_type'=>'none'), array('table_id' => $tableId, 'orig_header' => 'Compare'));
+      
+      
+      $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+      if($pageWasRefreshed) {
+        //Plugin::wdtlog('REFRESHED '.$pageWasRefreshed);
+      } else {
+        $_result = $wpdb->get_results("SELECT advanced_settings FROM ".$wpdb->prefix."wpdatatables WHERE id = ".$tableId, ARRAY_A);
+        $advancedSettingsTable = json_decode($_result[0]['advanced_settings']);
+        
+          if(isset($_SESSION["wdtvisibilitytoggleclicked"])){  //session used
+            if($_SESSION["wdtvisibilitytoggleclicked"] == 'wdt-apply-columns-list'){  //tooggled visibility
+              if($_SESSION["wdtvisibilitytoggleloopcount"] == 0){
+                Plugin::wdtlog('LAMAN2');
+              }
+            }else{
+              $_upd = $wpdb->update($wpdb->prefix."wpdatatables_columns", array('visible'=> $advancedSettingsTable->compareDetail), array('table_id' => $tableId, 'orig_header' => 'Compare'));
+            }
+          }else{
+            $_upd = $wpdb->update($wpdb->prefix."wpdatatables_columns", array('visible'=> $advancedSettingsTable->compareDetail), array('table_id' => $tableId, 'orig_header' => 'Compare'));
+          }
 
+          if(isset($_SESSION["wdtvisibilitytoggleloopcount"])){    
+            if($_SESSION["wdtvisibilitytoggleloopcount"] > 0 ){
+              unset($_SESSION["wdtvisibilitytoggleloopcount"]);
+              unset($_SESSION["wdtvisibilitytoggleclicked"]);
+            }else{
+              $_SESSION["wdtvisibilitytoggleloopcount"]++;
+            }
+          }
 
+      }
+  
+    }
+    
+    public static function wdtlog($txt){
+      $_log = fopen(WDT_CD_ROOT_PATH."log.txt", "a");
+      fwrite($_log, "\n".$txt);
+      fclose($_log);
+    }
+    
     public static function wdtInsertColumn($namedDataArray, $wpid, $xls_url){
-
-      $tableData = WDTConfigController::loadTableFromDB($wpid);
-      $advancedSettingsTable = json_decode($tableData->advanced_settings);
-
       foreach($namedDataArray as $i => $item) {
           $namedDataArray[$i] = array('Compare'=>'<input type="checkbox" aria-label="Compare Column Header" class="wdt_compare_checkbox" tabindex="0"/>') + $namedDataArray[$i];
       }
-
       return $namedDataArray;
     }
 
@@ -301,14 +352,10 @@ class Plugin
      */
     public static function wdtCompareDetailEnqueueBackendafterrender()
     {
-        if (self::$initialized) {
-            wp_enqueue_script('wdt-cd-backend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array(), WDT_CD_VERSION, true);
-            wp_localize_script( 'wdt-cd-backend-afterrender', 'wdt_ajax_compare', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-
+        if (self::$initialized) {           
             wp_dequeue_script( 'wdt-column-config' );
             wp_deregister_script( 'wdt-column-config' );
             wp_enqueue_script('wdt-column-config', WDT_CD_ROOT_URL . 'assets/js/column_config_object.js', array(), WDT_CD_VERSION, true);
-
         }
     }
 
@@ -331,9 +378,7 @@ class Plugin
                 WDT_CD_VERSION,
                 true
             );
-
-            wp_localize_script( 'wdt-cd-backend', 'wdt_ajax_compare_backend', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-
+            wp_enqueue_script('wdt-cd-backend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array(), WDT_CD_VERSION, true);       
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
 
@@ -360,13 +405,16 @@ class Plugin
                 array(),
                 WDT_CD_VERSION
             );
-
+            
+             wp_enqueue_script('wdt-cd-frontend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array(), WDT_CD_VERSION, true);
+            
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
 
-
-
         }
+        
+        
+        
     }
 
     /**

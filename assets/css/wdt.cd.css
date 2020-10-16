@@ -203,7 +203,8 @@ div#wdt-cd-modal div.modal-header {
     position: relative !important;
     box-sizing: border-box;
     padding: 0px !important;
-    width: 100%;
+    /*width: 100%;*/
+    overflow:hidden;
 }
 .wdtcomparerow>span {
     padding: 5px;
@@ -493,4 +494,11 @@ table.wpDataTable tbody tr td:first-child input:focus{
   #wdt-compare-table {
     width:768px !important;
   }  
+}
+
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-filters,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-compare,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-sorting,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-details{
+  display:none;
 }
