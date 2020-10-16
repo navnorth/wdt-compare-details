@@ -243,6 +243,13 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               });
             })
             
+            if(jQuery('.column-settings-overlay').length){
+              var target = document.querySelector('.column-settings-overlay');
+              observer.observe(target, {
+                attributes: true
+              });
+            }
+            
         }
 
     })(jQuery);
@@ -269,10 +276,7 @@ jQuery('#wdt-column-settings-buttons .wdt-column-apply').click(function (e) {
  var observer = new MutationObserver(function(mutations) {
     hidecolumnsettingstab();
 });
-var target = document.querySelector('.column-settings-overlay');
-observer.observe(target, {
-  attributes: true
-});
+
 function hidecolumnsettingstab(){
   try {
     if(wpdatatable_config.currentOpenColumn.orig_header != null){
