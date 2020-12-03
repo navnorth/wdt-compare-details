@@ -3,13 +3,13 @@ namespace WDTCompareDetail;
 session_start();
 /**
  * @package Compare-Details for wpDataTables
- * @version 1.0.4
+ * @version 1.1.0
  */
 /*
 Plugin Name: Compare-Details for wpDataTables
 Plugin URI: https://wpdatatables.com/documentation/addons/compare-detail/
 Description: A wpDataTables addon which allows comparing details for selected rows in a popup.
-Version: 1.0.4
+Version: 1.1.0
 Author: Navigation North
 Author URI: https://www.navigationnorth.com
 Text Domain: wpdatatables
@@ -31,9 +31,9 @@ define('WDT_CD_ROOT_PATH', plugin_dir_path(__FILE__));
 // URL of WDT Compare-detail plugin
 define('WDT_CD_ROOT_URL', plugin_dir_url(__FILE__));
 // Current version of WDT Compare-detail plugin
-define('WDT_CD_VERSION', '1.0.3');
+define('WDT_CD_VERSION', '1.1.0');
 // Required wpDataTables version
-define('WDT_CD_VERSION_TO_CHECK', '2.8.2');
+define('WDT_CD_VERSION_TO_CHECK', '3.2.0');
 // Path to Compare-detail templates
 define('WDT_CD_TEMPLATE_PATH', WDT_CD_ROOT_PATH . 'templates/');
 
@@ -63,7 +63,7 @@ class Plugin
     public static function init()
     {
         // Check if wpDataTables is installed
-        
+
         if (!defined('WDT_ROOT_PATH')) {
             add_action('admin_notices', array('WDTCompareDetail\Plugin', 'wdtNotInstalled'));
             return false;
@@ -297,7 +297,7 @@ class Plugin
         }
     }
 
-    
+
 
     /**
      * Formatting row data structure for ajax display table
@@ -652,7 +652,7 @@ class Plugin
         return $content;
     }
 
-    
+
 
     /**
      * Update wpdatatables table in database after deactivate/uninstall Compare-Detail add-on
@@ -667,11 +667,11 @@ class Plugin
             $tempTableID = (int)$advancedSetting['id'];
             $tempAdvancedSettings = json_decode($advancedSetting['advanced_settings']);
             if ( $action == 'deactivate'){
-                
+
                 $_tmpAdvSet = isset($tempAdvancedSettings->compareDetail);
                 if (isset($tempAdvancedSettings->compareDetail) && $tempAdvancedSettings->compareDetail == 1 &&
                     isset($tempAdvancedSettings->compareDetailLogic) && $tempAdvancedSettings->compareDetailLogic == 'button'){
-                    
+
                     $tempAdvancedSettings->compareDetail = 0;
                     $tempAdvancedSettings->compareDetailLogic = 'row';
                     $tempAdvancedSettings = json_encode($tempAdvancedSettings);
@@ -684,7 +684,7 @@ class Plugin
 
                     $allTablesIDWithCD[] = $tempTableID;
                 }
-                
+
 
                 if ($_tmpAdvSet){
                     $rows =  $wpdb->get_results( 'SELECT id, orig_header FROM '.$wpdb->prefix .'wpdatatables_columns WHERE table_id = '.$tempTableID.' ORDER BY pos ASC' , ARRAY_A);
@@ -693,7 +693,7 @@ class Plugin
                         if($row['orig_header'] == 'Compare'){
 
                             $wpdb->delete( $wpdb->prefix . 'wpdatatables_columns', array( 'id' => $row['id']));
-                            
+
                             if (isset($tempAdvancedSettings->compareDetail)){
                                 unset($tempAdvancedSettings->compareDetail);
                                 unset($tempAdvancedSettings->compareDetailLogic);
@@ -709,8 +709,8 @@ class Plugin
                                     array('id'=> $tempTableID)
                                 );
                             }
-                            
-                            
+
+
                         }else{
                           $wpdb->update(
                               $wpdb->prefix . 'wpdatatables_columns',
@@ -721,9 +721,9 @@ class Plugin
                         }
                     }
                 }
-                
-                
-                
+
+
+
             } else if ( $action == 'uninstall') {
                 if (isset($tempAdvancedSettings->compareDetail)){
                     unset($tempAdvancedSettings->compareDetail);
@@ -832,5 +832,5 @@ class Plugin
 
         echo $activation;
     }
-  
+
 } //end of class
