@@ -36,21 +36,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                }
             }, 100); // check every 100ms
 
-            var thebodytr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody tr td:nth-of-type(1)');
-            function insertCompareButton(){
-              if(!jQuery('.dataTables_compare_button_wrapper').length){
-                var html = '<div class="dataTables_compare_button_wrapper">';
-                    html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
-                    html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
-                    html += '</div>';
-                jQuery( html).insertBefore( '.wpDataTablesWrapper .dataTables_filter label');
-
-                html = '<div class="dataTables_compare_message" style="display:none;"><span class="dashicons dashicons-warning"></span><span class="cmpr_content"></span></div>';
-                if (!jQuery('.dataTables_compare_message').length) {
-                  jQuery( html).insertAfter( '.wpDataTablesWrapper .dataTables_filter');
-                }
-              }
-            }
+            var thebodytr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody tr td:nth-of-type(1)');          
 
 
             /**
@@ -291,6 +277,23 @@ function hidecolumnsettingstab(){
     //document.getElementById("demo").innerHTML = err.message;
   }
 }
+
+// Function for inserting compare button
+function insertCompareButton(){
+  if(!jQuery('.dataTables_compare_button_wrapper').length){
+    var html = '<div class="dataTables_compare_button_wrapper">';
+        html += '<a class="compare_button" role="button" aria-label="Please select up to 3 schools to compare" title="Compare" tabindex="0">Compare</a>';
+        html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
+        html += '</div>';
+    jQuery( html).insertBefore( '.wpDataTablesWrapper .dataTables_filter label');
+
+    html = '<div class="dataTables_compare_message" style="display:none;"><span class="dashicons dashicons-warning"></span><span class="cmpr_content"></span></div>';
+    if (!jQuery('.dataTables_compare_message').length) {
+      jQuery( html).insertAfter( '.wpDataTablesWrapper .dataTables_filter');
+    }
+  }
+}
+
 
 /**
 * Hide Compare Modal Column Settngs
