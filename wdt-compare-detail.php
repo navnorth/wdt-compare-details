@@ -378,7 +378,7 @@ class Plugin
                 WDT_CD_VERSION,
                 true
             );
-            wp_enqueue_script('wdt-cd-backend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array(), WDT_CD_VERSION, true);
+            wp_enqueue_script('wdt-cd-backend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array('wdt-md-frontend'), WDT_CD_VERSION, true);
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
 
@@ -406,7 +406,7 @@ class Plugin
                 WDT_CD_VERSION
             );
 
-             wp_enqueue_script('wdt-cd-frontend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array(), WDT_CD_VERSION, true);
+             wp_enqueue_script('wdt-cd-frontend-afterrender', WDT_CD_ROOT_URL . 'assets/js/wdt.cd.backend.afterrender.js', array('wdt-md-frontend'), WDT_CD_VERSION, true);
 
             \WDTTools::exportJSVar('wdtMdDashboard', is_admin());
             \WDTTools::exportJSVar('wdtMdTranslationStrings', \WDTTools::getTranslationStrings());
