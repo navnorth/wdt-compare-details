@@ -1,7 +1,7 @@
 var forcompare = [];
 var globalresponse = 0;
 var msg_timer;
-var max_compare_len = 3;
+var max_compare_len = 10;
 
 wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDescription) {
     (function ($) {
@@ -291,6 +291,10 @@ function insertCompareButton(){
     if (!jQuery('.dataTables_compare_message').length) {
       jQuery( html).insertAfter( '.wpDataTablesWrapper .dataTables_filter');
     }
+    
+    jQuery('.wpDataTablesWrapper .wpDataTable').addClass('fixed_headers');
+    
+    
   }
 }
 
@@ -663,14 +667,16 @@ function retrieveCompareData(obj,tableDescription){
           }
           chtml += '</table>';
 
-          jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').append(chtml).show('slow',function(){
-            adjusmodalcolumnwidth(function(){
-              adjustrowheight(function(){
-                jQuery('.wdt-compare-preloader-wrapper').hide(300);
-                //setTimeout(function(){ adjusmodalcolumnwidth(); }, 100000);
+          jQuery('#wdt-cd-modal').find('.wdt-compare-modal-body-content').append(chtml).show('slow',
+            setTimeout(function(){
+              adjusmodalcolumnwidth(function(){
+                adjustrowheight(function(){
+                  jQuery('.wdt-compare-preloader-wrapper').hide(300);
+                  //setTimeout(function(){ adjusmodalcolumnwidth(); }, 100000);
+                });
               });
-            });
-          });
+            }, 100)
+          );
           
           
           
@@ -688,6 +694,7 @@ function retrieveCompareData(obj,tableDescription){
 
 
 function isOdd(num) { return num % 2;}
+/*
 function adjusmodalcolumnwidth(callback){
   var forcomparelength = forcompare.length;
   var colwidth = 100/(parseInt(forcomparelength) + 1);
@@ -696,6 +703,49 @@ function adjusmodalcolumnwidth(callback){
       callback();
   }
 }
+*/
+
+function adjusmodalcolumnwidth(callback){
+  var forcomparelength = forcompare.length; 
+  if(forcomparelength < 4 ){
+    var hdrwidth = jQuery('.wdtcomparerow.hdr').outerWidth();
+    var containerwidth = jQuery('.wdt-compare-modal-body-content').outerWidth();
+    var winwidth = jQuery(window).width();
+    var divisor = forcomparelength + 1;
+    if(winwidth < 1024){divisor =  2}
+    var colwidth =  containerwidth / divisor;
+    jQuery('.wdtcomparerow.hdr').css('width',colwidth+'px');
+    jQuery('.wdtcomparerow.dtl').css('width',colwidth+'px');
+    
+    if(forcomparelength > 1){
+      //console.log('> 1');
+      jQuery('.wdt-compare-modal-body-content').css('padding-left',colwidth+'px');
+      jQuery('.wdt-compare-modal-body-content').removeClass('enola');
+    }else{
+      //console.log('< 2');
+      jQuery('.wdt-compare-modal-body-content').addClass('enola');
+    }
+  }else{
+    var hdrwidth = jQuery('.wdtcomparerow.hdr').outerWidth();
+    var containerwidth = jQuery('.wdt-compare-modal-body-content').outerWidth();
+    var winwidth = jQuery(window).width();
+    var divisor = 4;
+    if(winwidth < 1024){divisor =  3}
+    if(winwidth < 841){divisor =  2}
+    var colwidth =  containerwidth / divisor;
+    jQuery('.wdtcomparerow.hdr').css('width',colwidth+'px');
+    jQuery('.wdtcomparerow.dtl').css('width',colwidth+'px');
+    jQuery('.wdt-compare-modal-body-content').css('padding-left',colwidth+'px');
+  }
+  
+  if (callback && typeof(callback) === "function") {
+      callback();
+  }
+}
+
+
+
+
 
 function adjustrowheight(callback){
   jQuery(".wdtcomparerow").css('height','auto');

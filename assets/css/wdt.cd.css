@@ -502,3 +502,40 @@ table.wpDataTable tbody tr td:first-child input:focus{
 #wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-details{
   display:none;
 }
+
+
+
+/*FIXED COLUMN HEADER*/
+.wdt-compare-modal-body-content .wdtcomparerow.hdr {
+    position: absolute !important;
+    width: 227px;
+    left: 26px;
+    top: auto;
+    z-index: 1;
+}
+.wdt-compare-modal-body-content.enola .wdtcomparerow.hdr {
+    position: relative !important;
+    left: 0px;
+}
+.wdt-compare-modal-body-content.enola{
+    padding-left:0px;
+    overflow-x: unset;
+}
+.wdtcomparerow.dtl {
+    vertical-align: top;
+}
+.wdt-compare-modal-body-content {
+    overflow-x: scroll;
+    padding-left: 227px;
+}
+#content tr:nth-child(even) .wdtcomparerow.hdr {
+    background: #ddd;
+}
+#content tr:nth-child(odd) .wdtcomparerow.hdr {
+    background: #fff;
+}
+.wdt-compare-modal-body-content table{
+  position: unset !important;
+}
+
+
