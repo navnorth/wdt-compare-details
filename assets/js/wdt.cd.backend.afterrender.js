@@ -285,27 +285,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                 attributes: true
               });
             }
-            
-            
-            /* ----------------------- */
-            /*      ACCESSIBILITY      */
-            /* ----------------------- */
-            // aria-label for dropdown boxes in the filter section
-            jQuery(document).ready(function(){
-              jQuery('.wpDataTableFilterSection').find('button.dropdown-toggle').each(function(index,obj){
-                  var button_lbl = jQuery(obj).closest('.wpDataTableFilterSection').find('label').text();
-                  jQuery(obj).attr('aria-label',button_lbl);
-              });
-              
-              jQuery('.wpDataTableFilterSection').find('select.wdt-select-filter').each(function(index,obj){
-                  var select_lbl = jQuery(obj).closest('.wpDataTableFilterSection').find('label').text();
-                  jQuery(obj).attr('aria-label',select_lbl);
-              });
-              
-              
-              
-            });
-            
+
             
         }
 
