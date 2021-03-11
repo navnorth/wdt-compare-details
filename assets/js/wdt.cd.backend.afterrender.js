@@ -1,17 +1,10 @@
 var forcompare = [];
 let tbl_cntr = 0;
 let idtoinstance = [];
-jQuery('.wpdt-c').each(function(i, obj) {
-  if(jQuery(obj).find('.wpDataTablesWrapper').length > 0){
-    forcompare[tbl_cntr] = [];
-    tbl_cntr++;
-  }
-});
-
 var globalresponse = 0;
 var msg_timer = [];
 var max_compare_len = 10;
-var show_partial_percentage = 0;
+var show_partial_percentage = .18;
 var breakpoints = [4,3,2]
 let wpdt_instance_cntr = 0; 
 let prev_instance_id = '';
@@ -279,6 +272,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                   });
                 })
                 idtoinstance[index] = wpdt_instance_cntr;
+                forcompare[wpdt_instance_cntr] = [];
                 wpdt_instance_cntr++;
               }
               prev_instance_id = index;
@@ -418,17 +412,14 @@ function initiateModal(obj,tableDescription){
     retrieveCompareData(jQuery(obj),tblno,tableDescription,function(){
       setTimeout(function(){
         adjusmodalcolumnwidth(function(){
-          console.log('#33333');
           adjustrowheight(function(){
-            console.log('#44444');
             jQuery('.wdt-compare-preloader-wrapper').hide(300);
             //setTimeout(function(){ adjusmodalcolumnwidth(); }, 100000);
           });
         });
       }, 1000);
     });
-    showCompareModal(obj,tblno,tableDescription, function(){      
-      console.log('#22222');                
+    showCompareModal(obj,tblno,tableDescription, function(){                  
     });
 
     
@@ -651,7 +642,6 @@ function getrowindex(obj){
 
 function retrieveCompareData(obj,tblno,tableDescription,callback){
     var tableid = jQuery('#wpdt_main_wrapper_'+tblno).find('table.wpDataTable').attr('data-wpdatatable_id');
-    console.log('TBL ID:'+tableid);
     globalresponse = 0;
     var table_name = (tableDescription.compareDetailPopupTitle == "")? "Compare Details": tableDescription.compareDetailPopupTitle;
     jQuery.ajax({
@@ -813,7 +803,6 @@ function adjusmodalcolumnwidth(callback){
 
 function adjusmodalcolumnwidth(callback){
   var tblno = active_tblno;
-  console.log(tblno);
   var forcomparelength = forcompare[tblno].length;
   var parentwrap = jQuery('#wpdt_main_wrapper_'+tblno);
   if(forcomparelength < 4 ){
@@ -843,13 +832,13 @@ function adjusmodalcolumnwidth(callback){
     if(winwidth < 1024){divisor =  breakpoints[1]}
     if(winwidth < 841){divisor =  breakpoints[2]}
     var showpartial =  (containerwidth / divisor) * show_partial_percentage;
-    var colwidth =  containerwidth / divisor;
+    var colwidth =  (containerwidth - showpartial) / divisor;
     parentwrap.find('.wdtcomparerow.hdr').css('width',colwidth+'px');
     parentwrap.find('.wdtcomparerow.dtl').css('width',colwidth+'px');
     //parentwrap.find('.wdt-compare-modal-body-content').css('padding-left',colwidth+'px');
   }
   
-  parentwrap.find('.wdt-compare-modal-body-content').scrollLeft(showpartial);
+  /*parentwrap.find('.wdt-compare-modal-body-content').scrollLeft(showpartial);*/
   
   if (callback && typeof(callback) === "function") {
       callback();
@@ -862,7 +851,6 @@ function adjusmodalcolumnwidth(callback){
 
 function adjustrowheight(callback){
   var tblno = active_tblno;
-  console.log('ADJUST HEIGHT:'+tblno);
   var parentwrap = jQuery('#wpdt_main_wrapper_'+tblno);
   parentwrap.find(".wdtcomparerow").css('height','auto');
   parentwrap.find(".wdt-compare-modal-body-content table tr").each(function(i, l_row){
