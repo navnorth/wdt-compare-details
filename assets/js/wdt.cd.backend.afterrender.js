@@ -213,9 +213,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             /**
             * Set focus back to last active element before opening the  compare modal.
             */
-            jQuery('#wdt-cd-modal').on('hidden.bs.modal', function () {
+            jQuery('.wdt-cd-modal').on('hidden.bs.modal', function () {
               jQuery('.wdt-compare-preloader-wrapper').hide(300,function(){
-                console.log(prev_scrollpos);
                 setTimeout(function(){
                   jQuery(window).scrollTop(prev_scrollpos);
                 }, 1);
