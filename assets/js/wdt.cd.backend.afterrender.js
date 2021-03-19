@@ -1,15 +1,15 @@
 var forcompare = [];
-let tbl_cntr = 0;
-let idtoinstance = [];
+var tbl_cntr = 0;
+var idtoinstance = [];
 var globalresponse = 0;
 var msg_timer = [];
 var max_compare_len = 10;
 var show_partial_percentage = .18;
 var breakpoints = [4,3,2]
-let wpdt_instance_cntr = 0; 
-let prev_instance_id = '';
-let active_tblno = 0; //works only after compare modal visible
-let prev_scrollpos = 0;
+var wpdt_instance_cntr = 0; 
+var prev_instance_id = '';
+var active_tblno = 0; //works only after compare modal visible
+var prev_scrollpos = 0;
 wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDescription) {
     (function ($) {
         if (tableDescription.compareDetail) { // compare enabled
