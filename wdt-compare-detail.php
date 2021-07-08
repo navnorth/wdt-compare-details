@@ -151,7 +151,7 @@ class Plugin
       $_tmpadvset = json_decode($_result[0]['advanced_settings']);
       $_tmpadvset->compareDetailColumnOption = 0;
       $_tmpadvset->masterDetailColumnOption = 0;
-      $_tmpadvset->sorting = 0;
+      $_tmpadvset->sorting = 1;
       $_tmpadvset = json_encode($_tmpadvset);
       $wpdb->update($wpdb->prefix."wpdatatables_columns", array('advanced_settings'=>$_tmpadvset), array('table_id' => $tableId, 'orig_header' => 'Compare'));
       $wpdb->update($wpdb->prefix."wpdatatables_columns", array('filter_type'=>'none'), array('table_id' => $tableId, 'orig_header' => 'Compare'));
@@ -159,7 +159,7 @@ class Plugin
 
       $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
       if($pageWasRefreshed) {
-        //Plugin::wdtlog('REFRESHED '.$pageWasRefreshed);
+        
       } else {
         $_result = $wpdb->get_results("SELECT advanced_settings FROM ".$wpdb->prefix."wpdatatables WHERE id = ".$tableId, ARRAY_A);
         $advancedSettingsTable = json_decode($_result[0]['advanced_settings']);
@@ -167,7 +167,7 @@ class Plugin
           if(isset($_SESSION["wdtvisibilitytoggleclicked"])){  //session used
             if($_SESSION["wdtvisibilitytoggleclicked"] == 'wdt-apply-columns-list'){  //tooggled visibility
               if($_SESSION["wdtvisibilitytoggleloopcount"] == 0){
-                Plugin::wdtlog('LAMAN2');
+                
               }
             }else{
               $_upd = $wpdb->update($wpdb->prefix."wpdatatables_columns", array('visible'=> $advancedSettingsTable->compareDetail), array('table_id' => $tableId, 'orig_header' => 'Compare'));

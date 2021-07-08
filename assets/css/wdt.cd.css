@@ -625,10 +625,20 @@ table.wpDataTable tbody tr td:first-child input:focus{
     max-height: 100% !important;
     */
 }
-#content tr:nth-child(even) .wdtcomparerow.hdr {
+#content tr:nth-child(even) .wdtcomparerow.hdr,
+.wdt-compare-modal-body-content tr:nth-child(even) .wdtcomparerow.hdr {
     background: #ddd;
 }
-#content tr:nth-child(odd) .wdtcomparerow.hdr {
+#content tr:nth-child(odd) .wdtcomparerow.hdr,
+.wdt-compare-modal-body-content tr:nth-child(odd) .wdtcomparerow.hdr {
+    background: #fff;
+}
+#content tr:nth-child(even),
+.wdt-compare-modal-body-content tr:nth-child(even) {
+    background: #ddd;
+}
+#content tr:nth-child(odd),
+.wdt-compare-modal-body-content tr:nth-child(odd) {
     background: #fff;
 }
 .wdt-compare-modal-body-content table{
