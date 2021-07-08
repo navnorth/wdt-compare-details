@@ -3,7 +3,7 @@ namespace WDTCompareDetail;
 session_start();
 /**
  * @package Compare-Details for wpDataTables
- * @version 1.1.3
+ * @version 1.1.2
  */
 /*
 Plugin Name: Compare-Details for wpDataTables
