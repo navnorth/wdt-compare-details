@@ -12,7 +12,8 @@
             compareDetailRender: '',
             compareDetailRenderPage: '',
             compareDetailRenderPost: '',
-            compareDetailPopupTitle: '',
+            compareDetailPopupTitle: 10,
+            compareDetailMaxCompare: '',
             setCompareDetail: function (compareDetail) {
 
 
@@ -50,6 +51,7 @@
                     jQuery('.wdt-cd-render-page-block').hide();
                     jQuery('.wdt-cd-column-block').addClass('hidden');
                     wpdatatable_config.setCompareDetailPopupTitle('');
+                    wpdatatable_config.setCompareDetailMaxCompare(10);
                     wpdatatable_config.setCompareDetailLogic('row');
                     wpdatatable_config.setCompareDetailRender('popup');
                         
@@ -171,6 +173,12 @@
                 wpdatatable_config.compareDetailPopupTitle = compareDetailPopupTitle;
                 jQuery( '#wdt-cd-popup-title' ).val( compareDetailPopupTitle );
             },
+            setCompareDetailMaxCompare: function (compareDetailMaxCompare) {
+                wpdatatable_config.compareDetailMaxCompare = compareDetailMaxCompare;
+                jQuery( '#wdt-cd-max-compare' ).val( compareDetailMaxCompare );
+            },
+            
+            
 
         });
 
@@ -190,7 +198,8 @@
                 var compareDetailRenderPage = advancedSettings.compareDetailRenderPage;
                 var compareDetailRenderPost = advancedSettings.compareDetailRenderPost;
                 var compareDetailPopupTitle = advancedSettings.compareDetailPopupTitle;
-
+                var compareDetailMaxCompare = advancedSettings.compareDetailMaxCompare;
+                
                 if (typeof compareDetail !== 'undefined') {
                     wpdatatable_config.setCompareDetail(compareDetail);
                 }
@@ -213,6 +222,10 @@
 
                 if (typeof compareDetailPopupTitle !== 'undefined') {
                     wpdatatable_config.setCompareDetailPopupTitle(compareDetailPopupTitle);
+                }
+                
+                if (typeof compareDetailMaxCompare !== 'undefined') {
+                    wpdatatable_config.setCompareDetailMaxCompare(compareDetailMaxCompare);
                 }
 
             }
@@ -259,6 +272,13 @@
          */
         $('#wdt-cd-popup-title').change(function (e) {
             wpdatatable_config.setCompareDetailPopupTitle($(this).val());
+        });
+        
+        /**
+         * Set "Compare-detail" max Compare
+         */
+        $('#wdt-cd-max-compare').change(function (e) {
+            wpdatatable_config.setCompareDetailMaxCompare($(this).val());
         });
 
         /**

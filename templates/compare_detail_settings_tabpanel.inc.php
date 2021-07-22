@@ -46,5 +46,36 @@
         <!-- /Compare-Detail Popup Title -->
     </div>
     <!-- /.row -->
+    
+    
+    <!-- .row -->
+    <div class="row">
+        
+        <!-- Compare-Detail Max COmpare -->
+
+        <div class="col-sm-4 wdt-cd-popup-title-block hidden">
+            <h4 class="c-title-color m-b-4">
+                <?php _e('Max. Comparison', 'wpdatatables'); ?>
+                <i class="wpdt-icon-info-circle-thin" data-toggle="tooltip" data-placement="right"
+                   title="<?php _e('Enter the maximum number of items for comparison', 'wpdatatables'); ?>"></i>
+            </h4>
+            <div class="form-group">
+                <div class="fg-line">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="number" min="1" name="wdt-cd-max-compare" id="wdt-cd-max-compare"
+                                   class="form-control input-sm"
+                                   value=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /Compare-Detail Popup Title -->
+    </div>
+    <!-- /.row -->
+    
+    
 </div>
 <!-- /Compare-Detail settings -->

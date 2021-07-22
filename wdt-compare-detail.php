@@ -151,7 +151,7 @@ class Plugin
       $_tmpadvset = json_decode($_result[0]['advanced_settings']);
       $_tmpadvset->compareDetailColumnOption = 0;
       $_tmpadvset->masterDetailColumnOption = 0;
-      $_tmpadvset->sorting = 1;
+      $_tmpadvset->sorting = 0;
       $_tmpadvset = json_encode($_tmpadvset);
       $wpdb->update($wpdb->prefix."wpdatatables_columns", array('advanced_settings'=>$_tmpadvset), array('table_id' => $tableId, 'orig_header' => 'Compare'));
       $wpdb->update($wpdb->prefix."wpdatatables_columns", array('filter_type'=>'none'), array('table_id' => $tableId, 'orig_header' => 'Compare'));
@@ -356,6 +356,8 @@ class Plugin
             wp_dequeue_script( 'wdt-column-config' );
             wp_deregister_script( 'wdt-column-config' );
             wp_enqueue_script('wdt-column-config', WDT_CD_ROOT_URL . 'assets/js/column_config_object.js', array(), WDT_CD_VERSION, true);
+            //wp_enqueue_script('wdt-column-config', WDT_JS_PATH . 'wpdatatables/adm/table-settings/column_config_object.js', array(), WDT_CD_VERSION, true);
+            
         }
     }
 
@@ -438,7 +440,8 @@ class Plugin
         if (isset($table->compareDetailRenderPage)) $advancedSettings->compareDetailRenderPage = $table->compareDetailRenderPage;
         if (isset($table->compareDetailRenderPost)) $advancedSettings->compareDetailRenderPost = $table->compareDetailRenderPost;
         if (isset($table->compareDetailPopupTitle)) $advancedSettings->compareDetailPopupTitle = $table->compareDetailPopupTitle;
-
+        if (isset($table->compareDetailMaxCompare)) $advancedSettings->compareDetailMaxCompare = $table->compareDetailMaxCompare;
+        
         $tableConfig['advanced_settings'] = json_encode($advancedSettings);
 
         return $tableConfig;
@@ -478,7 +481,11 @@ class Plugin
             if (isset($advancedSettings->compareDetailPopupTitle)) {
                 $wpDataTable->compareDetailPopupTitle = $advancedSettings->compareDetailPopupTitle;
             }
-
+            
+            if (isset($advancedSettings->compareDetailMaxCompare)) {
+                $wpDataTable->compareDetailMaxCompare = $advancedSettings->compareDetailMaxCompare;
+            }
+            
         }
 
 
@@ -517,6 +524,10 @@ class Plugin
 
         if (isset($wpDataTable->compareDetailPopupTitle)) {
             $tableDescription->compareDetailPopupTitle = $wpDataTable->compareDetailPopupTitle;
+        }
+        
+        if (isset($wpDataTable->compareDetailMaxCompare)) {
+            $tableDescription->compareDetailMaxCompare = $wpDataTable->compareDetailMaxCompare;
         }
 
         if (isset($wpDataTable->compareDetail) && $wpDataTable->compareDetail &&
@@ -732,6 +743,7 @@ class Plugin
                     unset($tempAdvancedSettings->compareDetailRenderPage);
                     unset($tempAdvancedSettings->compareDetailRenderPost);
                     unset($tempAdvancedSettings->compareDetailPopupTitle);
+                    unset($tempAdvancedSettings->compareDetailMaxCompare);
                     $tempAdvancedSettings = json_encode($tempAdvancedSettings);
 
                     $wpdb->update(
