@@ -38,7 +38,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             var checkExist = setInterval(function() {
                if (jQuery('table.wpDataTable.dataTable').length) {
                   clearInterval(checkExist);
-                  insertCompareButton(tableDescription.tableId, tableDescription.compareDetailMaxCompare);
+                  insertCompareButton(tableDescription.tableId, max_compare_len);
                }
             }, 100); // check every 100ms
 
@@ -147,7 +147,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             * Display Compare Modal on Compare button click
             */
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.compare_button',function(e){
-              initiateModal(this,tableDescription);
+              initiateModal(this,tableDescription,max_compare_len);
               e.stopImmediatePropagation();
             })
             
@@ -157,7 +157,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             jQuery(document).on('keyup','.dataTables_compare_button_wrapper a.compare_button',function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
-                initiateModal(this,tableDescription);
+                initiateModal(this,tableDescription,max_compare_len);
                 e.stopImmediatePropagation();
               }
             })
@@ -318,10 +318,10 @@ function hidecolumnsettingstab(){
 }
 
 // Function for inserting compare button
-function insertCompareButton(inst, mxcmp){
+function insertCompareButton(inst, maxcomp){
     if(!jQuery('.wpDataTablesWrapper #'+inst+'_filter dataTables_compare_button_wrapper').length){
     var html = '<div class="dataTables_compare_button_wrapper">';
-        html += '<a class="compare_button" role="button" aria-label="Please select up to '+mxcmp+' school(s) to compare" title="Compare" tabindex="0">Compare</a>';
+        html += '<a class="compare_button" role="button" aria-label="Please select up to '+maxcomp+' school(s) to compare" title="Compare" tabindex="0">Compare</a>';
         html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
         html += '</div>';
     jQuery( html).insertBefore( '.wpDataTablesWrapper #'+inst+'_filter label');
@@ -370,7 +370,7 @@ function clearcomparison(tableid,tblno,maxcomp){
   preventfurtherchecks(tblno,maxcomp);
 }
 
-function initiateModal(obj,tableDescription){
+function initiateModal(obj,tableDescription,maxcomp){
   let tblno = parseInt(jQuery(obj).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
   prev_scrollpos = jQuery(window).scrollTop();
   compare_message(tblno);
@@ -393,7 +393,7 @@ function initiateModal(obj,tableDescription){
     
     
   }else{
-    compare_message(tblno,'Please select up to '+tableDescription.compareDetailMaxCompare+' school(s).');
+    compare_message(tblno,'Please select up to '+maxcomp+' school(s).');
   }
 }
 
