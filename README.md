@@ -3,14 +3,14 @@
 Contributors: Navigation North
 Tags: data tables, compare
 Requires at least: 4.9
-Tested up to: 5.2.4
-Stable tag: 1.1.1
+Tested up to: 5.7.3
+Stable tag: 1.2.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 ## Copyright / License / Funding Notice
 
-Copyright (c) 2021 [Navigation North](http://navigationnorth.com), released under [GPLv3](LICENSE)
+Copyright (c) 2021 [Navigation North](https://navigationnorth.com), released under [GPLv3](LICENSE)
 
 This project has been funded at least or in part with Federal funds from the U.S. Department of Education under Contract Number 91990018C0058. The content of this publication does not necessarily reflect the views or policies of the U.S. Department of Education nor does mention of trade names, commercial products, or organizations imply endorsement by the U.S. Government.
 
@@ -27,6 +27,11 @@ No Frequently Asked Questions
 No screenshots available.
 
 ### Changelog ###
+
+= 1.2.0 =
+* Compare buttons were enabled globally and not per table
+* Compare column lost the tab index
+* Applied frontend alternating row colors in Admin
 
 = 1.1.1 =
 * Updated for compatibility with wpDataTables 3.2

@@ -31,7 +31,7 @@ define('WDT_CD_ROOT_PATH', plugin_dir_path(__FILE__));
 // URL of WDT Compare-detail plugin
 define('WDT_CD_ROOT_URL', plugin_dir_url(__FILE__));
 // Current version of WDT Compare-detail plugin
-define('WDT_CD_VERSION', '1.1.2');
+define('WDT_CD_VERSION', '1.2.0');
 // Required wpDataTables version
 define('WDT_CD_VERSION_TO_CHECK', '3.2');
 // Path to Compare-detail templates
