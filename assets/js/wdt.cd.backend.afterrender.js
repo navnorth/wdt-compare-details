@@ -23,13 +23,66 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             var firstcolumn = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody>tr>td:first-child';
             
             /* Fix to checkbox conflict with master detail row click */
+            thebody.unbind();
             if(tableDescription.masterDetailLogic == 'row'){
-              thebody.unbind();
-              thebody.on('click', 'tr', function (e) {
-                  if(e.target.nodeName == 'TD'){
-                    showDetailsModal(this, tableDescription);
-                  }  
-              });
+              if(tableDescription.masterDetailRender === 'wdtNewPage' || tableDescription.masterDetailRender === 'wdtNewPost') {
+                
+                /**
+                * From Master Detail wdt.md.frontend.js begin
+                */
+                $(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' tbody').on('mouseenter', 'tr', function () {
+
+                    $(this).css("cursor", "pointer");
+
+                }).on('click', 'tr', function (e) {
+                    let elm = e.target.nodeName;
+                    if(elm == 'TD'){
+                      if ($(this).hasClass('row-detail')) {
+                          rowData = $(this).closest('tr').prevAll('.detail-show');
+                      } else {
+                          rowData = $(this);
+                      }
+
+                      var row = rowData.get(0);
+
+                      var data = wpDataTables[tableDescription.tableId].fnGetData(row);
+                      var detailObject = {};
+                      $(data).each(function (index, el) {
+                          var $columnValue = $('#' + tableDescription.tableId + '_md_dialog .detailColumn:eq(' + index + ')');
+
+                          $columnValue = $columnValue[0].id.replace(tableDescription.tableId + "_", "");
+                          if (el) {
+                              var val = el.toString();
+                          } else {
+                              var val = '';
+                          }
+                          if ($columnValue != 'masterdetail_detials') {
+                              $columnValue = $columnValue.replace('_detials', '');
+                              detailObject[$columnValue] = val;
+                          }
+
+                      });
+                      detailObject['wdt_md_id_table'] = tableDescription.dataTableParams.wpdatatable_id;
+                      $inputValue = $('#' + tableDescription.tableId + '_md_dialog .wdt_md_hidden_data');
+                      $submitButton = $('#' + tableDescription.tableId + '_md_dialog .master_detail_column_btn');
+                      $inputValue[0].value = JSON.stringify(detailObject);
+                      $submitButton.click();
+                    }
+                });
+                /**
+                * From Master Detail wdt.md.frontend.js end
+                */
+                
+              }else{
+                
+                thebody.unbind();
+                thebody.on('click', 'tr', function (e) {
+                    console.log('Popup '+ e.target.nodeName);
+                    if(e.target.nodeName == 'TD'){
+                      showDetailsModal(this, tableDescription);
+                    }  
+                });
+              }
             }
           
             jQuery('.master_detail_column_btn').attr('role','button');
@@ -551,6 +604,7 @@ function addtomodcomparelist(target,dataid,tblno,maxcomp,callback){
 }
 
 function preventfurtherchecks(tblno,maxcomp){
+  console.log(forcompare[tblno].length + ' == ' + maxcomp);
   if(forcompare[tblno].length > (maxcomp - 1)){
     jQuery('#wpdt_main_wrapper_'+tblno).find('table.wpDataTable tr td:first-child input[type="checkbox"]').each(function (i, obj) {
       if(jQuery(this).prop("checked")){
@@ -560,28 +614,24 @@ function preventfurtherchecks(tblno,maxcomp){
       }
     });
   }else{
-
-    if(forcompare[tblno].length == 0){
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').removeClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').removeClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Please select up to '+maxcomp+' school(s) to compare');
-    }else if(forcompare[tblno].length == 1){
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').addClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').removeClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Compare');
-    }else if(forcompare[tblno].length > 1) {
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').addClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').addClass('selected');
-      jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Compare');
-    }
-
-
     jQuery('#wpdt_main_wrapper_'+tblno).find('table.wpDataTable tr td input[type="checkbox"]').each(function (i, obj) {
         jQuery(this).prop('disabled', false);
     });
-
   }
-
+  
+  if(forcompare[tblno].length == 0){
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').removeClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').removeClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Please select up to '+maxcomp+' school(s) to compare');
+  }else if(forcompare[tblno].length == 1){
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').addClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').removeClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Compare');
+  }else if(forcompare[tblno].length > 1) {
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .clear_compare_button').addClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').addClass('selected');
+    jQuery('#wpdt_main_wrapper_'+tblno).find('.dataTables_compare_button_wrapper .compare_button').attr('aria-label','Compare');
+  }
 
 }
 
