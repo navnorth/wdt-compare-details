@@ -77,7 +77,6 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                 
                 thebody.unbind();
                 thebody.on('click', 'tr', function (e) {
-                    console.log('Popup '+ e.target.nodeName);
                     if(e.target.nodeName == 'TD'){
                       showDetailsModal(this, tableDescription);
                     }  
@@ -174,7 +173,6 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               if(keyCode == 13){
                 
                 let tblno = parseInt(jQuery(this).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
-                console.log(tblno);
                 if(forcompare[tblno].length > (max_compare_len - 1)){
                   jQuery(this).prop("checked", false);
                 }else{
@@ -300,9 +298,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
                   }
               });
             });
-            
-            //console.log(tableDescription['tableId']);
-            
+
             jQuery.each(wpDataTables, function(index, item) {
               
               if(prev_instance_id != index){
@@ -604,7 +600,6 @@ function addtomodcomparelist(target,dataid,tblno,maxcomp,callback){
 }
 
 function preventfurtherchecks(tblno,maxcomp){
-  console.log(forcompare[tblno].length + ' == ' + maxcomp);
   if(forcompare[tblno].length > (maxcomp - 1)){
     jQuery('#wpdt_main_wrapper_'+tblno).find('table.wpDataTable tr td:first-child input[type="checkbox"]').each(function (i, obj) {
       if(jQuery(this).prop("checked")){
@@ -833,11 +828,9 @@ function adjusmodalcolumnwidth(callback){
     parentwrap.find('.wdtcomparerow.dtl').css('width',colwidth+'px');
     
     if(forcomparelength > 1){
-      //console.log('> 1');
       //parentwrap.find('.wdt-compare-modal-body-content').css('padding-left',colwidth+'px');
       parentwrap.find('.wdt-compare-modal-body-content').removeClass('enola');
     }else{
-      //console.log('< 2');
       parentwrap.find('.wdt-compare-modal-body-content').addClass('enola');
     }
   }else{
