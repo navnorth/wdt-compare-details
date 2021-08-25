@@ -293,6 +293,11 @@ div#wdt-cd-modal div.modal-header {
 .wdtcomparerow.even {
     background-color: #d4d4d4 !important;
 }
+.wdtcomparerow a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
 .wdt-compare-block table tr {background-color: transparent !important;}
 .wdt-compare-block table tr td {padding: 8px 15px !important;/* min-height: 26px;*/}
 .wdt-compare-block table tr:last-of-type td {border-bottom: 0px !important;}

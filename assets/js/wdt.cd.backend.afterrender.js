@@ -9,19 +9,21 @@ var wpdt_instance_cntr = 0;
 var prev_instance_id = '';
 var active_tblno = 0; //works only after compare modal visible
 var prev_scrollpos = 0;
+var max_compare_len = [];
 wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDescription) {
     (function ($) {
         if (tableDescription.compareDetail) { // compare enabled
-            var max_compare_len = (tableDescription.compareDetailMaxCompare)? tableDescription.compareDetailMaxCompare: 10;
+            //var max_compare_len = (tableDescription.compareDetailMaxCompare)? tableDescription.compareDetailMaxCompare: 10;
            /**
            * Insert Compare and Clear Buttons
            */
-            var tableid = gettableid(jQuery('.wpDataTable.dataTable'));
+            //var tableid = gettableid(jQuery('.wpDataTable.dataTable'));
+            var tableid = tableDescription.tableWpId;
             var thebody = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody');
             var theheadtr = jQuery(tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead tr');
             var firstheader = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >thead>tr>th:first-child';
             var firstcolumn = tableDescription.selector + '_wrapper table#' + tableDescription.tableId + ' >tbody>tr>td:first-child';
-            
+            max_compare_len[tableid] = (tableDescription.compareDetailMaxCompare)? tableDescription.compareDetailMaxCompare: 10;
             /* Fix to checkbox conflict with master detail row click */
             thebody.unbind();
             if(tableDescription.masterDetailLogic == 'row'){
@@ -90,7 +92,7 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             var checkExist = setInterval(function() {
                if (jQuery('table.wpDataTable.dataTable').length) {
                   clearInterval(checkExist);
-                  insertCompareButton(tableDescription.tableId, max_compare_len);
+                  insertCompareButton(tableDescription.tableId, max_compare_len[tableid]);
                }
             }, 100); // check every 100ms
 
@@ -152,14 +154,14 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             jQuery(document).on('click','table.wpDataTable tbody tr td input.wdt_compare_checkbox',function(e){
               
               let tblno = parseInt(jQuery(this).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
-              
-              if(forcompare[tblno].length > (max_compare_len - 1)){
+              let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+              if(forcompare[tblno].length > (max_compare_len[tmp_tableid] - 1)){
                 jQuery(this).prop("checked", false);
               }
 
               var rowindex = parseInt(getrowindex(jQuery(this)));
-              addtomodcomparelist(jQuery(this), rowindex, tblno, max_compare_len,  function(){
-                preventfurtherchecks(tblno,max_compare_len);
+              addtomodcomparelist(jQuery(this), rowindex, tblno, max_compare_len[tmp_tableid],  function(){
+                preventfurtherchecks(tblno,max_compare_len[tmp_tableid]);
               });
               e.stopImmediatePropagation();
             })
@@ -173,21 +175,22 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               if(keyCode == 13){
                 
                 let tblno = parseInt(jQuery(this).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
-                if(forcompare[tblno].length > (max_compare_len - 1)){
+                let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+                if(forcompare[tblno].length > (max_compare_len[tmp_tableid] - 1)){
                   jQuery(this).prop("checked", false);
                 }else{
                   if(jQuery(this).is(":checked")){
                     jQuery(this).prop("checked", false);
-                    preventfurtherchecks(tblno,max_compare_len);
+                    preventfurtherchecks(tblno,max_compare_len[tmp_tableid]);
                   }else{
                     jQuery(this).prop("checked", true);
-                    preventfurtherchecks(tblno,max_compare_len);
+                    preventfurtherchecks(tblno,max_compare_len[tmp_tableid]);
                   }
                 }
 
                 var rowindex = parseInt(getrowindex(jQuery(this)));
-                addtomodcomparelist(jQuery(this), rowindex, tblno, max_compare_len, function(){
-                  preventfurtherchecks(tblno,max_compare_len);
+                addtomodcomparelist(jQuery(this), rowindex, tblno, max_compare_len[tmp_tableid], function(){
+                  preventfurtherchecks(tblno,max_compare_len[tmp_tableid]);
                 });
                 e.stopImmediatePropagation();
 
@@ -198,7 +201,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             * Display Compare Modal on Compare button click
             */
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.compare_button',function(e){
-              initiateModal(this,tableDescription,max_compare_len);
+              let tmp_tableid = gettableid(jQuery(e.target).closest('.wpnn_wpdt_action_wrapper').siblings('.wdtResponsiveWrapper').find('table.wpDataTable.dataTable'));
+              initiateModal(this,tableDescription,max_compare_len[tmp_tableid]);
               e.stopImmediatePropagation();
             })
             
@@ -208,7 +212,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             jQuery(document).on('keyup','.dataTables_compare_button_wrapper a.compare_button',function(e){
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
-                initiateModal(this,tableDescription,max_compare_len);
+                let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+                initiateModal(this,tableDescription,max_compare_len[tmp_tableid]);
                 e.stopImmediatePropagation();
               }
             })
@@ -218,7 +223,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             */
             jQuery(document).on('click','.dataTables_compare_button_wrapper a.clear_compare_button',function(e){
               let tblno = parseInt(jQuery(this).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
-              clearcomparison(tableid,tblno,max_compare_len);
+              let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+              clearcomparison(tableid,tblno,max_compare_len[tmp_tableid]);
               e.stopImmediatePropagation();
             })
             
@@ -229,7 +235,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
                 let tblno = parseInt(jQuery(this).closest('.wpdt_main_wrapper').attr('id').replace('wpdt_main_wrapper_',''));
-                clearcomparison(tableid,tblno,max_compare_len);
+                let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+                clearcomparison(tableid,tblno,max_compare_len[tmp_tableid]);
               }
               e.stopImmediatePropagation();
             })
@@ -239,7 +246,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
             */
             jQuery(document).on('click','.wdt-remove-column',function(e){
               var tid = jQuery(this).closest('.wpdt_main_wrapper').find('.wdtResponsiveWrapper table.wpDataTable').attr('data-wpdatatable_id');
-              deletecolumn(jQuery(this),tid,max_compare_len,function(){
+              let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+              deletecolumn(jQuery(this),tid,max_compare_len[tmp_tableid],function(){
                 jQuery('.wdt-cd-modal').focus();
                 adjusmodalcolumnwidth();
                 //setCompareTableWidth();
@@ -253,7 +261,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               var keyCode = (e.keyCode ? e.keyCode : e.which);
               if(keyCode == 13){
                 var tid = jQuery(this).closest('.wpdt_main_wrapper').find('.wdtResponsiveWrapper table.wpDataTable').attr('data-wpdatatable_id');
-                deletecolumn(jQuery(this),tid,max_compare_len,function(){
+                let tmp_tableid = gettableid(jQuery(e.target).closest('table.wpDataTable.dataTable'));
+                deletecolumn(jQuery(this),tid,max_compare_len[tmp_tableid],function(){
                   jQuery('#wdt-cd-modal').focus();
                   //setCompareTableWidth();
                 });
@@ -304,7 +313,8 @@ wpDataTablesHooks.onRenderDetails.push(function showDetailModalCompare(tableDesc
               if(prev_instance_id != index){
                 item.addOnDrawCallback( function(wpdt_instance_cntr){
                   synccomparechecks(idtoinstance[index],function(){
-                    preventfurtherchecks(idtoinstance[index],max_compare_len);
+                    let tmp_tableid = item[0]['dataset']['wpdatatable_id'];
+                    preventfurtherchecks(idtoinstance[index],max_compare_len[tmp_tableid]);
                   });
                 })
                 idtoinstance[index] = wpdt_instance_cntr;
@@ -368,9 +378,10 @@ function hidecolumnsettingstab(){
 
 // Function for inserting compare button
 function insertCompareButton(inst, maxcomp){
+  
     if(!jQuery('.wpDataTablesWrapper #'+inst+'_filter dataTables_compare_button_wrapper').length){
     var html = '<div class="dataTables_compare_button_wrapper">';
-        html += '<a class="compare_button" role="button" aria-label="Please select up to '+maxcomp+' school(s) to compare" title="Compare" tabindex="0">Compare</a>';
+        html += '<a class="compare_button" role="button" aria-label="Please select up to '+maxcomp+' school(s) to compare" title="Compare" tabindex="0" >Compare</a>';
         html += '<a class="clear_compare_button" role="button" aria-label="Clear Compare Data" title="Clear Comparison" tabindex="0">Clear</a>';
         html += '</div>';
     jQuery( html).insertBefore( '.wpDataTablesWrapper #'+inst+'_filter label');
@@ -589,6 +600,7 @@ function addtomodcomparelist(target,dataid,tblno,maxcomp,callback){
     }else{
       removefrommodecompatelist(dataid,tblno,function(){
         if(forcompare[tblno].length > (maxcomp - 1)){
+          console.log();
           compare_message(tblno,'Maximum of '+maxcomp+' school(s) can be compared.');
         }
       });
