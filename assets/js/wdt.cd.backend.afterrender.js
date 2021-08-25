@@ -600,7 +600,6 @@ function addtomodcomparelist(target,dataid,tblno,maxcomp,callback){
     }else{
       removefrommodecompatelist(dataid,tblno,function(){
         if(forcompare[tblno].length > (maxcomp - 1)){
-          console.log();
           compare_message(tblno,'Maximum of '+maxcomp+' school(s) can be compared.');
         }
       });
