@@ -1,7 +1,7 @@
 (function ($) {
     $(function () {
-        
-        
+
+
         /**
          * Extend wpdatatable_config object with new properties and methods
          */
@@ -12,11 +12,12 @@
             compareDetailRender: '',
             compareDetailRenderPage: '',
             compareDetailRenderPost: '',
-            compareDetailPopupTitle: '',
+            compareDetailPopupTitle: 10,
+            compareDetailMaxCompare: '',
             setCompareDetail: function (compareDetail) {
-                
-                
-                
+
+
+
                 let state = false;
                 let compareColumn;
                 wpdatatable_config.compareDetail = compareDetail;
@@ -31,16 +32,17 @@
                     jQuery('.wdt-cd-popup-title-block').show();
                     jQuery('#wdt-cd-click-event-logic').selectpicker('refresh').trigger('change');
                     jQuery('#wdt-cd-render-data-in').selectpicker('refresh').trigger('change');
-
                     var cnt = 0;
                     for (let column of wpdatatable_config.columns) {
+                        
                         if (column.orig_header === 'Compare') {
-                            wpdatatable_config.columns[cnt].visible = 1
-                            //console.log(wpdatatable_config.columns[cnt].visible);
+                            wpdatatable_config.columns[cnt].filter_type = "none";
+                            wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
+                            wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;
                         }
                         cnt++;
                     }
-                    
+
                 } else {
                     jQuery('.wdt-cd-click-event-logic-block').hide();
                     jQuery('.wdt-cd-render-data-in-block').hide();
@@ -49,17 +51,20 @@
                     jQuery('.wdt-cd-render-page-block').hide();
                     jQuery('.wdt-cd-column-block').addClass('hidden');
                     wpdatatable_config.setCompareDetailPopupTitle('');
+                    wpdatatable_config.setCompareDetailMaxCompare(10);
                     wpdatatable_config.setCompareDetailLogic('row');
                     wpdatatable_config.setCompareDetailRender('popup');
-
+                        
                     var cnt = 0;
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'Compare') {
-                            wpdatatable_config.columns[cnt].visible = 0
-                            //console.log(wpdatatable_config.columns[cnt].visible);  
+                            wpdatatable_config.columns[cnt].filter_type = "none";
+                            wpdatatable_config.columns[cnt].masterDetailColumnOption = 0;
+                            wpdatatable_config.columns[cnt].compareDetailColumnOption = 0;
                         }
                         cnt++;
                     }
+                    
                     for (let column of wpdatatable_config.columns) {
                         if (column.orig_header === 'comparedetail') {
                             state = true;
@@ -71,7 +76,7 @@
                         for (var i = compareColumn.pos + 1; i <= wpdatatable_config.columns.length - 1; i++) {
                             wpdatatable_config.columns[i].pos = --wpdatatable_config.columns[i].pos;
                         }
-                        
+
                         //remove comparedetaisl object from columns_by_headers
                         wpdatatable_config.columns_by_headers = _.omit(
                             wpdatatable_config.columns_by_headers, compareColumn.orig_header);
@@ -82,8 +87,6 @@
                             function (el) {
                                 return el.orig_header == compareColumn.orig_header;
                             });
-
-                       
                     }
 
                 }
@@ -126,7 +129,7 @@
                                 {
                                     type: 'comparedetail',
                                     orig_header: 'comparedetail',
-                                    display_header: 'Details',
+                                    display_header: 'comparedetail',
                                     pos: wpdatatable_config.columns.length,
                                     details: 'comparedetail',
                                     parent_table: wpdatatable_config
@@ -170,6 +173,12 @@
                 wpdatatable_config.compareDetailPopupTitle = compareDetailPopupTitle;
                 jQuery( '#wdt-cd-popup-title' ).val( compareDetailPopupTitle );
             },
+            setCompareDetailMaxCompare: function (compareDetailMaxCompare) {
+                wpdatatable_config.compareDetailMaxCompare = compareDetailMaxCompare;
+                jQuery( '#wdt-cd-max-compare' ).val( compareDetailMaxCompare );
+            },
+            
+            
 
         });
 
@@ -182,13 +191,14 @@
             var advancedSettings = JSON.parse(wpdatatable_init_config.advanced_settings);
 
             if (advancedSettings !== null) {
-                
+
                 var compareDetail = advancedSettings.compareDetail;
                 var compareDetailLogic = advancedSettings.compareDetailLogic;
                 var compareDetailRender = advancedSettings.compareDetailRender;
                 var compareDetailRenderPage = advancedSettings.compareDetailRenderPage;
                 var compareDetailRenderPost = advancedSettings.compareDetailRenderPost;
                 var compareDetailPopupTitle = advancedSettings.compareDetailPopupTitle;
+                var compareDetailMaxCompare = advancedSettings.compareDetailMaxCompare;
                 
                 if (typeof compareDetail !== 'undefined') {
                     wpdatatable_config.setCompareDetail(compareDetail);
@@ -212,6 +222,10 @@
 
                 if (typeof compareDetailPopupTitle !== 'undefined') {
                     wpdatatable_config.setCompareDetailPopupTitle(compareDetailPopupTitle);
+                }
+                
+                if (typeof compareDetailMaxCompare !== 'undefined') {
+                    wpdatatable_config.setCompareDetailMaxCompare(compareDetailMaxCompare);
                 }
 
             }
@@ -259,6 +273,13 @@
         $('#wdt-cd-popup-title').change(function (e) {
             wpdatatable_config.setCompareDetailPopupTitle($(this).val());
         });
+        
+        /**
+         * Set "Compare-detail" max Compare
+         */
+        $('#wdt-cd-max-compare').change(function (e) {
+            wpdatatable_config.setCompareDetailMaxCompare($(this).val());
+        });
 
         /**
          * Show Compare-detail settings tab
@@ -276,7 +297,7 @@
  * Initialize new property in object
  */
 function callbackExtendColumnObjectCompare(column,obj) {
-  
+
     var newOptionName = 'compareDetailColumnOption';
     if (typeof obj.compareDetailColumnOption == 'undefined'){
         obj.setAdditionalParam(newOptionName, column.compareDetailColumnOption);
@@ -300,29 +321,22 @@ function callbackExtendOptionInObjectFormatCompare(allColumnSettings, obj) {
  */
 function callbackExtendSmallBlockCompare($columnBlock, column) {
     $columnBlock.find('i.wdt-toggle-show-compare').click(function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         if (!column.compareDetailColumnOption) {
             column.compareDetailColumnOption = 1;
             jQuery(this)
               .removeClass('inactive')
-              .addClass('zmdi-layers')
-              .removeClass('zmdi-layers-off');
         } else {
             column.compareDetailColumnOption = 0;
             jQuery(this)
               .addClass('inactive')
-              .removeClass('zmdi-layers')
-              .addClass('zmdi-layers-off');
         }
     });
 
     if (!column.compareDetailColumnOption) {
         $columnBlock.find('i.wdt-toggle-show-compare')
           .addClass('inactive')
-          .addClass('zmdi-layers-off')
-          .removeClass('zmdi-layers');
     }
-    
 }
 
 /**

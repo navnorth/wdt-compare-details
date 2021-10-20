@@ -15,7 +15,7 @@
             <h4 class="c-black m-b-20">
                 <?php _e('Purchase Code', 'wpdatatables'); ?>
                 <i class="zmdi zmdi-help-outline" data-toggle="tooltip" data-placement="right"
-                   title="<?php _e('If your brought the plugin directly on our website, enter TMS Store purchase code to enable auto updates.', 'wpdatatables'); ?>"></i>
+                   title="<?php _e('Ignore this.', 'wpdatatables'); ?>"></i>
             </h4>
             <!-- /TMS Store Purchase Code Heading -->
 
@@ -29,7 +29,7 @@
                             <input type="text" name="wdt-purchase-code-store-compare-detail"
                                    id="wdt-purchase-code-store-compare-detail"
                                    class="form-control input-sm"
-                                   placeholder="<?php _e('Please enter your Compare-Detail TMS Store Purchase Code', 'wpdatatables'); ?>"
+                                   placeholder="<?php _e('No need for an activation code.', 'wpdatatables'); ?>"
                                    value=""
                             />
                         </div>

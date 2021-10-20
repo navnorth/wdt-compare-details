@@ -1,5 +1,5 @@
 
-.wpdt-c .wpDataTablesWrapper .DTTT_button.DTTT_button_cd:before{
+.wpdt_main_wrapper .wpDataTablesWrapper .DTTT_button.DTTT_button_cd:before{
     font-family: "dashicons" !important;
     font-size: 18px;
     content: "\f325";
@@ -43,20 +43,20 @@
   border: 1px solid #127eec !important;
 }
 
-.wpdt-c .wpDataTablesWrapper .compare_detail_column_btn{
+.wpdt_main_wrapper .wpDataTablesWrapper .compare_detail_column_btn{
     cursor: pointer;
 }
-.wpdt-c .wpDataTablesWrapper .compare_detail_column_btn:focus{
+.wpdt_main_wrapper .wpDataTablesWrapper .compare_detail_column_btn:focus{
    background-color: rgb(221, 221, 221) !important;
 }
-.wpdt-c .wpDataTablesWrapper input.cd-link{
+.wpdt_main_wrapper .wpDataTablesWrapper input.cd-link{
     cursor: pointer;
     background: none!important;
     border: none;
     padding: 0!important;
     color: #2196F3;
 }
-.wpdt-c .wpDataTablesWrapper input.cd-link:hover{
+.wpdt_main_wrapper .wpDataTablesWrapper input.cd-link:hover{
     color: #0a6ebd;
     text-decoration: none;
 }
@@ -82,9 +82,6 @@ a.compare_details {
     display: block;
     width: 32px;
 }
-th.wdtheader.sort.expand.column-compare {
-    width: 96px !important;
-}
 
 
 
@@ -94,14 +91,19 @@ th.wdtheader.sort.expand.column-compare {
 /* ***************** */
 div#wdt-cd-modal div.modal-header {
     border-bottom: 1px solid #ececec;
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+    background-color: #fff;
 }
-.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody tr td input[type="checkbox"]{
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable tbody tr td input[type="checkbox"]{
   cursor:pointer !important;
 }
-.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody[logic="button"] tr td{
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable tbody[logic="button"] tr td{
     cursor:default !important;
 }
-.wpdt-c .wpDataTablesWrapper table.wpDataTable tbody[logic="row"] tr td{
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable tbody[logic="row"] tr td{
     cursor:pointer !important;
 }
 #wdt-cd-modal {padding:0px 15px !important;}
@@ -114,7 +116,14 @@ div#wdt-cd-modal div.modal-header {
     float: right;
 }
 .dataTables_compare_button_wrapper.spaced{margin-right:30px !important;}
-.wdt-compare-modal-body-content { width: 100%; }
+.wdt-compare-modal-body-content {
+    display: block;
+    width: 100%;
+    /*height: 100% !important;*/
+    max-height: 592px !important;
+    overflow-x: auto;
+    overflow-y: auto;
+}
 .wdt-compare-modal-body-content table {width: 100%; table-layout: fixed;}
 .dataTables_compare_button_wrapper a.compare_button,
 .dataTables_compare_button_wrapper a.clear_compare_button {
@@ -130,27 +139,88 @@ div#wdt-cd-modal div.modal-header {
     border-radius: 4px;
 }
 
-.wpdt-c .modal-dialog.compare {
-    width:100% !important;
+.wpdt_main_wrapper .modal-dialog.compare {
+    width: 100% !important;
     max-width: 960px !important;
-    margin: 30px auto !important;
+    margin: 0px auto !important;
+    /*height: 100% !important;*/
+    max-height: 694px;
+}
+.wpdt_main_wrapper #wdt-cd-modal {box-sizing:border-box;}
+
+@media screen and (max-width: 1124px) and (min-width: 960px) {
+  .wpdt_main_wrapper .modal-dialog.compare { max-width: 768px !important;}
+}
+@media screen and (max-width: 959px) and (min-width: 768px) {
+  .wpdt_main_wrapper .modal-dialog.compare { max-width: 680px !important;}
 }
 
-@media (max-width: 1023px) {
-  .wpdt-c .modal-dialog.compare { max-width: 768px !important;}
+@media screen and (max-width: 767px) and (min-width: 1px) {
+  .wpdt_main_wrapper .modal-dialog.compare {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+      margin: 0px !important;
+      max-height: 100% !important;
+  }
+  #wdt-cd-modal .modal-dialog.compare .modal-content {
+      height: 100%;
+  }
+  .wdt-compare-modal-body-content {
+    position: fixed;
+    max-height: 100% !important;
+    margin: 0px 0px 0px 0px !important;
+    width: unset;
+    top: 80px;
+    left: 5px;
+    right: 5px !important;
+    bottom: 5px;
+    overflow-y: auto !important;
+    box-sizing: content-box;
+  }
+  
 }
-@media (max-width: 840px) {
-  .wpdt-c .modal-dialog.compare { max-width: 600px !important;}
+
+
+/*
+@media screen and (max-width: 1023px) and (min-width: 841px) {
+  .wpdt_main_wrapper .modal-dialog.compare { max-width: 768px !important;}
 }
-@media (max-width: 768px) {
-  /*.dataTables_compare_button_wrapper { width: 100% !important;}*/
+@media screen and (max-width: 840px) and (min-width: 769px) {
+  .wpdt_main_wrapper .modal-dialog.compare { max-width: 680px !important;}
+}
+@media screen and (max-width: 768px) and (min-width: 1px) {
+  .wpdt_main_wrapper .modal-dialog.compare {
+    max-width: 680px !important;
+    height: 100% !important;
+    top: -18px !important;
+    display: block;
+    margin: 0px auto !important;
+    max-height:100% !important;
+  }
+  .wpdt_main_wrapper .modal .modal-body {
+    padding: 15px 0px !important;
+  }
+  
+  
+  .wpdt_main_wrapper .wdt-compare-modal-body-content .wdtcomparerow.hdr {
+    left: 0px !important;
+  }
+  
+  .wpdt_main_wrapper #wdt-cd-modal .modal-dialog.compare .modal-content {
+      min-height: 100% !important;
+      max-height: 100% !important;
+  }
+  
   .wpDataTablesWrapper .dt-buttons {
     float: left !important;
     margin-left: 0px !important;
   }
   .dataTables_compare_button_wrapper {float:left !important;}
 }
-
+*/
 
 #wdt-cd-modal .modal-body .col-sm-3 {
   padding-left:15px !important;
@@ -206,6 +276,8 @@ div#wdt-cd-modal div.modal-header {
     position: relative !important;
     box-sizing: border-box;
     padding: 0px !important;
+    /*width: 100%;*/
+    overflow:hidden;
 }
 .wdtcomparerow>span {
     padding: 5px;
@@ -220,6 +292,11 @@ div#wdt-cd-modal div.modal-header {
 }
 .wdtcomparerow.even {
     background-color: #d4d4d4 !important;
+}
+.wdtcomparerow a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 .wdt-compare-block table tr {background-color: transparent !important;}
 .wdt-compare-block table tr td {padding: 8px 15px !important;/* min-height: 26px;*/}
@@ -405,12 +482,12 @@ table.wpDataTable tbody tr td input[type="checkbox"]{
   opacity: .6;
 }
 
-.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting      table tr th.scnd:after, 
-.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc  table tr th.scnd:after {
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting      table tr th.scnd:after, 
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_asc  table tr th.scnd:after {
     border-bottom-color: #ffffff !important;
 }
 
-.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after {
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable thead th:first-child.sorting_desc table tr th.scnd:after {
     border-top-color: #ffffff !important;
 }
 
@@ -420,8 +497,8 @@ table.wpDataTable tbody tr td input[type="checkbox"]{
     opacity: 1;
 }
 
-.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th.sorting:after, 
-.wpdt-c .wpDataTablesWrapper table.wpDataTable thead th.sorting_asc:after {
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable thead th.sorting:after, 
+.wpdt_main_wrapper .wpDataTablesWrapper table.wpDataTable thead th.sorting_asc:after {
     border-bottom-color: #ffffff !important;
 }
 
@@ -484,15 +561,91 @@ table.wpDataTable tbody tr td:first-child input:focus{
 
 
 /*Responsive*/
+/*
 @media screen and (max-width: 768px) {
-  .wdt-compare-modal-body-content table {
+  .wpdt_main_wrapper  .wdt-compare-modal-body-content table {
     min-width: 600px !important;
   }
-  .wdt-compare-modal-body-content {
-    overflow-x: scroll;
+  .wpdt_main_wrapper .wdt-compare-modal-body-content {
+    overflow-x: visible;
     overflow-y: visible;
   }
   #wdt-compare-table {
     width:768px !important;
   }  
+  
+  .wpdt_main_wrapper .wdt-compare-modal-body-content {
+      padding-bottom: 10px;
+  }
+  
+  .wpdt_main_wrapper #wdt-cd-modal {
+    padding: 0px !important;
+    max-height: 100% !important;
+  }
+  */
+  
+  
+}
+
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-filters,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-compare,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-sorting,
+#wdt-columns-list-modal .wdt-columns-container div[data-orig_header='Compare'] .wdt-toggle-show-details{
+  display:none;
+}
+
+
+
+/*FIXED COLUMN HEADER*/
+.wdt-compare-modal-body-content .wdtcomparerow.hdr {
+    position: sticky !important;
+    width: 227px;
+    left: 0px;
+    top: auto;
+    z-index: 1;
+}
+.wdt-compare-modal-body-content.enola .wdtcomparerow.hdr {
+    position: relative !important;
+    left: 0px;
+}
+.wdt-compare-modal-body-content.enola{
+    padding-left:0px;
+    overflow-x: unset;
+}
+.wdtcomparerow.dtl {
+    vertical-align: top;
+}
+.wdt-compare-modal-body-content {
+    /*overflow-x: visible;
+    overflow-y: visible;
+    padding-left: 227px;*/
+}
+.wpdt_main_wrapper .modal-dialog.compare .modal-body {
+    padding: 5px !important;
+    position: sticky;
+    top: 60px;
+    /*
+    overflow: hidden;
+    height: auto;
+    max-height: 100% !important;
+    */
+}
+#content tr:nth-child(even) .wdtcomparerow.hdr,
+.wdt-compare-modal-body-content tr:nth-child(even) .wdtcomparerow.hdr {
+    background: #ddd;
+}
+#content tr:nth-child(odd) .wdtcomparerow.hdr,
+.wdt-compare-modal-body-content tr:nth-child(odd) .wdtcomparerow.hdr {
+    background: #fff;
+}
+#content tr:nth-child(even),
+.wdt-compare-modal-body-content tr:nth-child(even) {
+    background: #ddd;
+}
+#content tr:nth-child(odd),
+.wdt-compare-modal-body-content tr:nth-child(odd) {
+    background: #fff;
+}
+.wdt-compare-modal-body-content table{
+  position: unset !important;
 }
