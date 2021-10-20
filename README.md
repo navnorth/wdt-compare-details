@@ -4,7 +4,7 @@ Contributors: Navigation North
 Tags: data tables, compare
 Requires at least: 4.9
 Tested up to: 5.7.3
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -28,10 +28,11 @@ No screenshots available.
 
 ### Changelog ###
 
-= 1.2.0 =
+= 1.2.1 =
 * Compare buttons were enabled globally and not per table
 * Compare column lost the tab index
 * Applied frontend alternating row colors in Admin
+* fixed issue with Max Comparison by making separate instances per table.
 
 = 1.1.1 =
 * Updated for compatibility with wpDataTables 3.2

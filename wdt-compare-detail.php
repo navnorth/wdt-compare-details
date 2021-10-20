@@ -3,13 +3,13 @@ namespace WDTCompareDetail;
 session_start();
 /**
  * @package Compare-Details for wpDataTables
- * @version 1.2.0
+ * @version 1.2.1
  */
 /*
 Plugin Name: Compare-Details for wpDataTables
 Plugin URI: https://wpdatatables.com/documentation/addons/compare-detail/
 Description: A wpDataTables addon which allows comparing details for selected rows in a popup.
-Version: 1.2.0
+Version: 1.2.1
 Author: Navigation North
 Author URI: https://www.navigationnorth.com
 Text Domain: wpdatatables
@@ -31,7 +31,7 @@ define('WDT_CD_ROOT_PATH', plugin_dir_path(__FILE__));
 // URL of WDT Compare-detail plugin
 define('WDT_CD_ROOT_URL', plugin_dir_url(__FILE__));
 // Current version of WDT Compare-detail plugin
-define('WDT_CD_VERSION', '1.2.0');
+define('WDT_CD_VERSION', '1.2.1');
 // Required wpDataTables version
 define('WDT_CD_VERSION_TO_CHECK', '3.2');
 // Path to Compare-detail templates
